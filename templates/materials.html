@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Study Materials - IT Department Portal{% endblock %}
+
+{% block content %}
+<style>
+.page-header {
+    background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+    color: white;
+    padding: 3rem 0;
+    margin: -1rem -1rem 2rem -1rem;
+    border-radius: 0 0 15px 15px;
+}
+.table {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    border: none;
+    overflow: hidden;
+}
+.table thead th {
+    background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+    color: white;
+    border: none;
+    padding: 1rem;
+    font-weight: 600;
+}
+.table tbody tr:nth-child(odd) {
+    background-color: #f8f9fa;
+}
+.table tbody tr:nth-child(even) {
+    background-color: white;
+}
+.table tbody tr:hover {
+    background-color: #e3f2fd;
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}
+.btn-download {
+    background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    color: white;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+.btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+    color: white;
+}
+.material-title {
+    color: #2575fc;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+.material-subject {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+</style>
+
+<div class="page-header">
+    <div class="container text-center">
+        <h1 class="display-4 mb-3"><i class="bi bi-file-earmark-text me-3"></i>Study Materials</h1>
+        <p class="lead mb-0">Access downloadable resources and study materials</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    {% if materials %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><i class="bi bi-file-earmark-text me-2"></i>Material</th>
+                        <th><i class="bi bi-tag me-2"></i>Subject</th>
+                        <th class="text-center"><i class="bi bi-download me-2"></i>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for material in materials %}
+                    <tr>
+                        <td>
+                            <div>
+                                <div class="material-title">{{ material.title }}</div>
+                                <div class="material-subject">📄 Document</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-light text-dark">{{ material.subject or 'General' }}</span>
+                        </td>
+                        <td class="text-center">
+                            <a href="{{ material.file_link }}" target="_blank" class="btn-download">
+                                <i class="bi bi-download"></i>
+                                <span>Download</span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-file-earmark-x fs-1 text-muted mb-3"></i>
+            <h3 class="text-muted">No study materials available</h3>
+            <p class="text-muted">Check back later for new resources and materials.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
