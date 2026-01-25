@@ -1,84 +1,89 @@
-import mysql.connector
-from mysql.connector import Error
+import sqlite3
 
 def create_database():
     try:
-        # Connect to MySQL server (without specifying a database)
-        connection = mysql.connector.connect(
-            host='localhost',
-            user='root',  # Replace with your MySQL username
-            password=''   # Replace with your MySQL password
-        )
+        # 1. Connect to SQLite database (creates the file if it doesn't exist)
+        connection = sqlite3.connect('database.db')
+        cursor = connection.cursor()
+        print("Connected to SQLite database 'database.db'")
 
-        if connection.is_connected():
-            cursor = connection.cursor()
+        # 2. Create Users Table
+        # Note: SQLite uses 'INTEGER PRIMARY KEY AUTOINCREMENT' instead of 'INT AUTO_INCREMENT'
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL
+            )
+        """)
+        print("Table 'users' created successfully")
 
-            # Create database if it doesn't exist
-            cursor.execute("CREATE DATABASE IF NOT EXISTS it_department_db")
-            print("Database 'it_department_db' created successfully")
+        # 3. Insert Static Admin User
+        # SQLite uses 'INSERT OR IGNORE' instead of 'INSERT IGNORE'
+        cursor.execute("""
+            INSERT OR IGNORE INTO users (username, password) VALUES ('admin', 'admin123')
+        """)
+        print("Admin user checked/inserted")
 
-            # Switch to the database
-            cursor.execute("USE it_department_db")
+        # 4. Create Events Table (Updated with new fields from app.py)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS events (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                description TEXT,
+                event_date TEXT NOT NULL,
+                event_manager TEXT,
+                contact_number TEXT,
+                image_file TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        print("Table 'events' created successfully")
 
-            # Create users table
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS users (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    username VARCHAR(50) UNIQUE NOT NULL,
-                    password VARCHAR(255) NOT NULL
-                )
-            """)
-            print("Table 'users' created successfully")
+        # 5. Create Gallery Table (Replaces 'blogs' to match app.py)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS gallery (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                image_file TEXT NOT NULL,
+                caption TEXT,
+                upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        print("Table 'gallery' created successfully")
 
-            # Insert static admin user
-            cursor.execute("""
-                INSERT IGNORE INTO users (username, password) VALUES ('admin', 'admin123')
-            """)
-            print("Admin user inserted successfully")
+        # 6. Create Materials Table (Updated with Year and Semester)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS materials (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                subject TEXT NOT NULL,
+                target_year TEXT NOT NULL,
+                semester INTEGER NOT NULL,
+                file_link TEXT NOT NULL,
+                upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        print("Table 'materials' created successfully")
 
-            # Create events table
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS events (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    title VARCHAR(255) NOT NULL,
-                    description TEXT,
-                    event_date DATE
-                )
-            """)
-            print("Table 'events' created successfully")
+        # 7. Create Activity Logs Table (New requirement)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS activity_logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                action TEXT NOT NULL,
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        print("Table 'activity_logs' created successfully")
 
-            # Create blogs table (for achievements)
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS blogs (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    title VARCHAR(255) NOT NULL,
-                    content TEXT,
-                    image_url VARCHAR(500)
-                )
-            """)
-            print("Table 'blogs' created successfully")
+        connection.commit()
 
-            # Create materials table
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS materials (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    title VARCHAR(255) NOT NULL,
-                    subject VARCHAR(100),
-                    file_link VARCHAR(500)
-                )
-            """)
-            print("Table 'materials' created successfully")
-
-            connection.commit()
-
-    except Error as e:
+    except sqlite3.Error as e:
         print(f"Error: {e}")
 
     finally:
-        if connection.is_connected():
-            cursor.close()
+        if connection:
             connection.close()
-            print("MySQL connection closed")
+            print("SQLite connection closed")
 
 if __name__ == "__main__":
     create_database()

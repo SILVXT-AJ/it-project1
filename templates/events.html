@@ -21,47 +21,44 @@
 }
 </style>
 
-<header class="page-header-bg">
-    <ul class="circles"><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul>
-    <div class="container text-center position-relative z-2">
-        <h1 class="display-4 fw-bold mb-2">Upcoming Events</h1>
-        <p class="lead text-white-50">Workshops, Seminars, and Hackathons</p>
+<div class="page-header-bg text-center">
+    <div class="container position-relative z-1">
+        <h1 class="display-4 fw-bold mb-3" data-aos="fade-down">Upcoming Events</h1>
+        <p class="lead opacity-75" data-aos="fade-up" data-aos-delay="100">Workshops, seminars, and cultural activities.</p>
     </div>
-</header>
+    <ul class="circles"><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul>
+</div>
 
-<div class="container mb-5">
-    <div class="row g-4">
-        {% if events %}
-            {% for event in events %}
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
-                <div class="card h-100 shadow-sm hover-card">
-                    <div style="height: 200px; overflow: hidden; background: #eee;">
-                        {% if event.image_file %}
-                            <img src="{{ url_for('static', filename='uploads/' + event.image_file) }}" class="w-100 h-100 object-fit-cover" alt="Event">
-                        {% else %}
-                            <div class="d-flex align-items-center justify-content-center h-100 text-muted">
-                                <i class="bi bi-calendar-event fs-1"></i>
-                            </div>
-                        {% endif %}
-                    </div>
-                    
-                    <div class="card-body">
-                        <span class="badge bg-primary mb-2">{{ event.event_date }}</span>
-                        <h5 class="card-title fw-bold">{{ event.title }}</h5>
-                        <p class="card-text text-muted small">{{ event.description[:100] }}...</p>
-                        <a href="{{ url_for('event_detail', event_id=event.id) }}" class="btn btn-outline-primary btn-sm w-100 mt-2">View Details</a>
+<div class="container py-5 mt-n5 position-relative z-2">
+    <div class="row">
+        {% for event in events %}
+        <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up">
+            <div class="card h-100 shadow border-0 hover-card">
+                {% if event.image_file %}
+                <img src="{{ url_for('static', filename='uploads/' + event.image_file) }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="bi bi-calendar-event text-secondary display-4"></i>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <div class="text-primary fw-bold mb-2"><i class="bi bi-calendar-check me-2"></i>{{ event.event_date }}</div>
+                    <h4 class="card-title fw-bold">{{ event.title }}</h4>
+                    <p class="card-text text-muted">{{ event.description }}</p>
+                    <hr>
+                    <div class="d-flex justify-content-between text-muted small">
+                        <span><i class="bi bi-person-badge me-1"></i>{{ event.event_manager }}</span>
+                        <span><i class="bi bi-telephone me-1"></i>{{ event.contact_number }}</span>
                     </div>
                 </div>
             </div>
-            {% endfor %}
+        </div>
         {% else %}
-            <div class="col-12 text-center py-5">
-                <div class="p-5 bg-white rounded shadow-sm">
-                    <h3>No upcoming events.</h3>
-                    <p class="text-muted">Check back later!</p>
-                </div>
-            </div>
-        {% endif %}
+        <div class="col-12 text-center py-5">
+            <div class="text-muted opacity-50 mb-3"><i class="bi bi-calendar-x display-1"></i></div>
+            <h3>No upcoming events.</h3>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

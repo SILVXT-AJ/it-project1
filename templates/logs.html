@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}Activity Logs - Admin Panel{% endblock %}
+
+{% block content %}
+<style>
+/* 1. Header Style (Matches Dashboard) */
+.logs-header {
+    background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%); /* Deep Blue/Navy for "Security" feel */
+    color: white;
+    padding: 6rem 0 4rem 0; /* Extra padding at bottom for the overlap */
+    margin: -1rem -1rem 0 -1rem;
+    border-radius: 0 0 30px 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* 2. Floating Card Style */
+.logs-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    overflow: hidden; /* Keeps the table inside rounded corners */
+}
+
+/* 3. Table Styling */
+.table thead th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e9ecef;
+    padding: 1rem;
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    color: #555;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Badge for ID to look techy */
+.id-badge {
+    background: #e9ecef;
+    color: #495057;
+    font-family: monospace;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+</style>
+
+<div class="logs-header text-center">
+    <div class="container">
+        <h1 class="fw-bold mb-2"><i class="bi bi-shield-lock-fill me-2"></i>Activity Logs</h1>
+        <p class="opacity-75 mb-0" style="max-width: 600px; margin: 0 auto;">
+            Track all administrative actions, logins, and system changes for security and accountability.
+        </p>
+    </div>
+</div>
+
+<div class="container pb-5" style="margin-top: -50px;">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+        <span class="badge bg-white text-dark shadow-sm px-3 py-2 rounded-pill fw-normal">
+            <i class="bi bi-database me-1"></i> Total Records: <strong>{{ logs|length }}</strong>
+        </span>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-light shadow-sm rounded-pill px-4 fw-bold text-dark">
+            <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+        </a>
+    </div>
+
+    <div class="card logs-card bg-white">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4" style="width: 10%">Log ID</th>
+                            <th style="width: 65%">Action Detail</th>
+                            <th class="text-end pe-4" style="width: 25%">Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td class="ps-4">
+                                <span class="id-badge">#{{ log.id }}</span>
+                            </td>
+                            <td>
+                                {% if 'logged in' in log.action %}
+                                    <i class="bi bi-box-arrow-in-right text-success me-2"></i>
+                                {% elif 'logged out' in log.action %}
+                                    <i class="bi bi-box-arrow-right text-secondary me-2"></i>
+                                {% elif 'Failed' in log.action %}
+                                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+                                {% elif 'Added' in log.action or 'Uploaded' in log.action %}
+                                    <i class="bi bi-plus-circle-fill text-primary me-2"></i>
+                                {% elif 'Deleted' in log.action %}
+                                    <i class="bi bi-trash-fill text-danger me-2"></i>
+                                {% else %}
+                                    <i class="bi bi-activity text-muted me-2"></i>
+                                {% endif %}
+                                <span class="fw-medium">{{ log.action }}</span>
+                            </td>
+                            <td class="text-end pe-4 text-muted small">
+                                <i class="bi bi-clock me-1"></i> {{ log.timestamp }}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center py-5">
+                                <div class="text-muted opacity-50 mb-2"><i class="bi bi-clipboard-x display-4"></i></div>
+                                <p class="mb-0 fw-bold">No activity recorded yet.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
