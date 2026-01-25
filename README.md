@@ -1,66 +1,54 @@
-# 🎓 Department of Information Technology Portal
+# 🎓 IT Department Portal
 
-A responsive and dynamic web portal designed for the Department of Information Technology. This project serves as a centralized hub for students, faculty, and administrators to access academic resources, program details, and departmental updates.
+![Python](https://img.shields.io/badge/Python-3.10-blue?style=for-the-badge&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-2.0-green?style=for-the-badge&logo=flask&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-Database-lightgrey?style=for-the-badge&logo=sqlite&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple?style=for-the-badge&logo=bootstrap&logoColor=white)
 
-## 📖 Project Overview
-
-This website aims to bridge the communication gap between the department and its students. It features a clean, modern user interface that showcases the department's vision, provides detailed information on the Bachelor of Computer Applications (BCA) curriculum, and offers quick access to administrative portals.
-
-## ✨ Key Features
-
-* **Dynamic Landing Page:** A modern hero section with clear calls-to-action and departmental branding.
-* **Program Showcase:** Interactive cards displaying details for 1st, 2nd, and 3rd-year BCA (IT) streams.
-* **About Section:** informative section outlining the department's mission and educational goals.
-* **Role-Based Navigation:** Dedicated navigation links for Students, Faculty, and Admins.
-* **Responsive Design:** Optimized layout for viewing on desktops, tablets, and mobile devices.
-
-## 🛠️ Technologies Used
-
-* **Frontend:** HTML5, CSS3, JavaScript
-* **Styling:** Custom CSS (Flexbox/Grid) for responsive layout
-* **Fonts:** Google Fonts
-
-## 🚀 How to Run
-
-### Prerequisites
-1. **Python 3.x** installed.
-2. **XAMPP** installed and running (Start **Apache** and **MySQL**).
-
-### Installation Steps
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/SILVXT-AJ/project1.git](https://github.com/SILVXT-AJ/project1.git)
-
-2. **Navigate to the project folder:**
-   ```bash
-   cd project1/it_department
-
-3. **Install required libraries:**
-   ```bash
-   pip install -r requirements.txt
-
-(Or manually: pip install flask mysql-connector-python python-dotenv)
-
-4. **Setup the Database:**
-
-Make sure MySQL is running in XAMPP.
-
-Run the setup script to create the database and tables automatically:
-   ```bash
-   py setup_database.py
-```
-5. **Start the Website:**
-
-   ```bash
-   py app.py
-
-## 🔮 Future Enhancements
-
-* Integration of a backend database for real-time notices.
-* Student login portal for result viewing.
-* Faculty dashboard for attendance management.
+A comprehensive **Content Management System (CMS)** built for the Department of Information Technology. This web application centralizes departmental notices, event management, photo galleries, and study materials into one responsive platform.
 
 ---
 
-**Developed by:** SilvxtXSri-Ram
-**Course:** BCA (2nd Year)
+## 🚀 Key Features
+* **Dynamic Home Page:** Features an animated hero section and recent updates.
+* **Event Calendar:** Students can view upcoming seminars, workshops, and fests.
+* **Photo Gallery:** A masonry-style grid layout showcasing department memories.
+* **Study Materials:** A filterable repository for notes and question banks (sorted by Year/Semester).
+* **Admin Dashboard:** Secure session-based login for faculty to manage all content.
+
+---
+
+## 📸 Screenshots
+
+| **Home Page** | **Admin Dashboard** |
+|:---:|:---:|
+| <img src="https://via.placeholder.com/400x200?text=Home+Page+Preview" width="400"> | <img src="https://via.placeholder.com/400x200?text=Admin+Dashboard" width="400"> |
+| *Modern landing page with animations* | *Secure control panel for admins* |
+
+| **Study Materials** | **Activity Logs** |
+|:---:|:---:|
+| <img src="https://via.placeholder.com/400x200?text=Study+Materials" width="400"> | <img src="https://via.placeholder.com/400x200?text=Activity+Logs" width="400"> |
+| *Filterable resources by Year/Sem* | *Track admin actions and security* |
+
+*(Note: These are placeholders. You can upload real screenshots to your repo and paste the links here later!)*
+
+---
+
+## 🔮 Future Improvements
+
+We plan to upgrade this project with the following features:
+* **MySQL Migration:** Moving from SQLite to MySQL to handle larger student traffic and data concurrency.
+* **Student Login System:** A dedicated portal for students to submit assignments and view attendance.
+* **Email Notifications:** Automated email alerts to students when a new event or notice is posted.
+* **Search Functionality:** A global search bar to find materials and events instantly.
+
+---
+
+## 👨‍💻 Developed By
+
+**Silvest**
+* *2nd Year BCA Student*
+* *Full Stack Developer*
+* *Department of Information Technology*
+
+---
