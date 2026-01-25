@@ -46,7 +46,7 @@ We plan to upgrade this project with the following features:
 
 ## 👨‍💻 Developed By
 
-**Silvest**
+**Silvest AJ**
 * *2nd Year BCA Student*
 * *Department of Information Technology*
 
