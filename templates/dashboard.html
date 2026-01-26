@@ -4,79 +4,83 @@
 
 {% block content %}
 <style>
-/* --- DASHBOARD STYLES --- */
-.dashboard-header {
-    background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
-    color: white;
+    /* --- DASHBOARD STYLES --- */
+    .dashboard-header {
+        background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+        color: white;
 
-    /* !!! THIS IS THE FIX !!! */
-    /* We add 100px top padding to clear the floating navbar */
-    padding: 120px 0 40px 0;
+        /* !!! THIS IS THE FIX !!! */
+        /* We add 100px top padding to clear the floating navbar */
+        padding: 120px 0 40px 0;
 
-    margin: -1rem -1rem 2rem -1rem; /* Keep negative margin to stretch full width */
-    border-radius: 0 0 30px 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
+        margin: -1rem -1rem 2rem -1rem;
+        /* Keep negative margin to stretch full width */
+        border-radius: 0 0 30px 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
 
-.stats-card {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
-    padding: 1.5rem;
-    text-align: center;
-    border: none;
-    transition: transform 0.3s ease;
-}
-.stats-card:hover {
-    transform: translateY(-5px);
-}
-.stats-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #2575fc;
-}
+    .stats-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+        padding: 1.5rem;
+        text-align: center;
+        border: none;
+        transition: transform 0.3s ease;
+    }
 
-/* --- FIX FOR INVISIBLE BUTTON TEXT --- */
-.nav-pills .nav-link {
-    border-radius: 50px;
-    margin-right: 0.5rem;
-    padding: 10px 25px;
-    border: 1px solid #e9ecef;
+    .stats-card:hover {
+        transform: translateY(-5px);
+    }
 
-    /* FORCE TEXT TO BE DARK GREY */
-    color: #333 !important;
-    background: white;
-    font-weight: 600;
-}
+    .stats-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #2575fc;
+    }
 
-.nav-pills .nav-link.active {
-    background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
-    border-color: transparent;
+    /* --- FIX FOR INVISIBLE BUTTON TEXT --- */
+    .nav-pills .nav-link {
+        border-radius: 50px;
+        margin-right: 0.5rem;
+        padding: 10px 25px;
+        border: 1px solid #e9ecef;
 
-    /* ACTIVE BUTTON STAYS WHITE */
-    color: white !important;
-    box-shadow: 0 4px 10px rgba(37, 117, 252, 0.3);
-}
+        /* FORCE TEXT TO BE DARK GREY */
+        color: #333 !important;
+        background: white;
+        font-weight: 600;
+    }
 
-/* FIX FOR HEADER BUTTONS (LOGS/LOGOUT) */
-.btn-dashboard-action {
-    background: rgba(255, 255, 255, 0.2);
-    color: white !important;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(5px);
-}
-.btn-dashboard-action:hover {
-    background: white;
-    color: #2575fc !important;
-}
+    .nav-pills .nav-link.active {
+        background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+        border-color: transparent;
 
-.tab-content {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
-    padding: 2rem;
-    margin-top: 1.5rem;
-}
+        /* ACTIVE BUTTON STAYS WHITE */
+        color: white !important;
+        box-shadow: 0 4px 10px rgba(37, 117, 252, 0.3);
+    }
+
+    /* FIX FOR HEADER BUTTONS (LOGS/LOGOUT) */
+    .btn-dashboard-action {
+        background: rgba(255, 255, 255, 0.2);
+        color: white !important;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(5px);
+    }
+
+    .btn-dashboard-action:hover {
+        background: white;
+        color: #2575fc !important;
+    }
+
+    .tab-content {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+        margin-top: 1.5rem;
+    }
 </style>
 
 <div class="dashboard-header">
@@ -86,7 +90,8 @@
             <p class="mb-0 mt-2 opacity-75">Manage events, gallery, and study materials</p>
         </div>
         <div class="d-none d-md-block">
-            <a href="{{ url_for('view_logs') }}" class="btn btn-dashboard-action fw-bold shadow-sm me-2 rounded-pill px-4">
+            <a href="{{ url_for('view_logs') }}"
+                class="btn btn-dashboard-action fw-bold shadow-sm me-2 rounded-pill px-4">
                 <i class="bi bi-clock-history me-1"></i> Logs
             </a>
             <a href="{{ url_for('logout') }}" class="btn btn-danger fw-bold shadow-sm rounded-pill px-4">
@@ -122,7 +127,8 @@
     </div>
 
     <div class="d-md-none mb-4 text-center">
-        <a href="{{ url_for('view_logs') }}" class="btn btn-info text-white w-45 me-1"><i class="bi bi-clock-history"></i> Logs</a>
+        <a href="{{ url_for('view_logs') }}" class="btn btn-info text-white w-45 me-1"><i
+                class="bi bi-clock-history"></i> Logs</a>
         <a href="{{ url_for('logout') }}" class="btn btn-danger w-45"><i class="bi bi-box-arrow-right"></i> Logout</a>
     </div>
 
@@ -190,6 +196,7 @@
                             <th>Title</th>
                             <th>Date</th>
                             <th>Manager</th>
+                            <th>Registrations</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -200,14 +207,24 @@
                             <td>{{ event.event_date }}</td>
                             <td>{{ event.event_manager }}</td>
                             <td>
-                                <a href="{{ url_for('edit_event', event_id=event.id) }}" class="btn btn-sm btn-warning me-1"><i class="bi bi-pencil"></i></a>
-                                <form action="{{ url_for('delete_event', event_id=event.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this event?')">
+                                <a href="{{ url_for('view_event_registrations', event_id=event.id) }}"
+                                    class="badge bg-success text-decoration-none px-3 py-2" title="View Registrations">
+                                    <i class="bi bi-people me-1"></i>{{ registrations.get(event.id, 0) }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('edit_event', event_id=event.id) }}"
+                                    class="btn btn-sm btn-warning me-1"><i class="bi bi-pencil"></i></a>
+                                <form action="{{ url_for('delete_event', event_id=event.id) }}" method="POST"
+                                    class="d-inline" onsubmit="return confirm('Delete this event?')">
                                     <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>
                         </tr>
                         {% else %}
-                        <tr><td colspan="4" class="text-center text-muted py-3">No events found.</td></tr>
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-3">No events found.</td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -243,17 +260,22 @@
                     <tbody>
                         {% for photo in photos %}
                         <tr>
-                            <td><img src="{{ url_for('static', filename='uploads/' + photo.image_file) }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;"></td>
+                            <td><img src="{{ url_for('static', filename='uploads/' + photo.image_file) }}"
+                                    style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;"></td>
                             <td>{{ photo.caption }}</td>
                             <td>
-                                <a href="{{ url_for('edit_photo', photo_id=photo.id) }}" class="btn btn-sm btn-warning me-1"><i class="bi bi-pencil"></i></a>
-                                <form action="{{ url_for('delete_photo', photo_id=photo.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this photo?')">
+                                <a href="{{ url_for('edit_photo', photo_id=photo.id) }}"
+                                    class="btn btn-sm btn-warning me-1"><i class="bi bi-pencil"></i></a>
+                                <form action="{{ url_for('delete_photo', photo_id=photo.id) }}" method="POST"
+                                    class="d-inline" onsubmit="return confirm('Delete this photo?')">
                                     <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>
                         </tr>
                         {% else %}
-                        <tr><td colspan="3" class="text-center text-muted py-3">No photos found.</td></tr>
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-3">No photos found.</td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -266,7 +288,8 @@
                 <form method="POST" action="{{ url_for('add_material') }}">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Material Title</label>
-                        <input type="text" name="title" class="form-control" required placeholder="e.g. Java Notes Unit 1">
+                        <input type="text" name="title" class="form-control" required
+                            placeholder="e.g. Java Notes Unit 1">
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -285,8 +308,12 @@
                         <div class="col-md-3 mb-3">
                             <label class="form-label fw-bold">Semester</label>
                             <select name="semester" class="form-control" required>
-                                <option value="1">1</option><option value="2">2</option><option value="3">3</option>
-                                <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
                             </select>
                         </div>
                     </div>
@@ -314,7 +341,8 @@
                         <tr>
                             <td>
                                 <div class="fw-bold">{{ mat.title }}</div>
-                                <a href="{{ mat.file_link }}" target="_blank" class="small text-decoration-none"><i class="bi bi-link-45deg"></i> View Link</a>
+                                <a href="{{ mat.file_link }}" target="_blank" class="small text-decoration-none"><i
+                                        class="bi bi-link-45deg"></i> View Link</a>
                             </td>
                             <td>{{ mat.subject }}</td>
                             <td>
@@ -322,14 +350,18 @@
                                 <span class="badge bg-info text-dark">Sem {{ mat.semester }}</span>
                             </td>
                             <td>
-                                <a href="{{ url_for('edit_material', id=mat.id) }}" class="btn btn-sm btn-warning me-1"><i class="bi bi-pencil"></i></a>
-                                <form action="{{ url_for('delete_material', id=mat.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this material?')">
+                                <a href="{{ url_for('edit_material', id=mat.id) }}"
+                                    class="btn btn-sm btn-warning me-1"><i class="bi bi-pencil"></i></a>
+                                <form action="{{ url_for('delete_material', id=mat.id) }}" method="POST"
+                                    class="d-inline" onsubmit="return confirm('Delete this material?')">
                                     <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>
                         </tr>
                         {% else %}
-                        <tr><td colspan="4" class="text-center text-muted py-3">No materials found.</td></tr>
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-3">No materials found.</td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>

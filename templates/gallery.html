@@ -4,73 +4,331 @@
 
 {% block content %}
 <style>
-.gallery-header {
-    background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
-    color: white;
-    padding: 3rem 0;
-    margin: -1rem -1rem 2rem -1rem;
-    border-radius: 0 0 15px 15px;
-}
-.gallery-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: none;
-    overflow: hidden;
-    cursor: pointer; /* Shows the hand icon to indicate it's clickable */
-}
-.gallery-card:hover {
-    transform: translateY(-10px); /* Lifts up higher */
-    box-shadow: 0 1rem 3rem rgba(0,0,0,0.175) !important; /* Stronger shadow */
-}
+    .gallery-header {
+        background: linear-gradient(135deg, var(--gradient-start, #2575fc) 0%, var(--gradient-end, #6a11cb) 100%);
+        color: white;
+        padding: 3rem 0;
+        margin: -1rem -1rem 2rem -1rem;
+        border-radius: 0 0 15px 15px;
+    }
+
+    /* Masonry Grid Layout */
+    .gallery-grid {
+        column-count: 3;
+        column-gap: 20px;
+    }
+
+    @media (max-width: 992px) {
+        .gallery-grid {
+            column-count: 2;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .gallery-grid {
+            column-count: 1;
+        }
+    }
+
+    .gallery-item {
+        break-inside: avoid;
+        margin-bottom: 20px;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .gallery-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px var(--card-shadow, rgba(0, 0, 0, 0.2)) !important;
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .gallery-item:hover img {
+        transform: scale(1.05);
+    }
+
+    /* Overlay */
+    .gallery-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+        padding: 60px 20px 20px 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+    }
+
+    .gallery-overlay h6 {
+        color: white;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .gallery-overlay small {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Category Filter */
+    .category-filter {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 30px;
+    }
+
+    .category-btn {
+        background: var(--card-bg, white);
+        border: 2px solid var(--border-color, #e9ecef);
+        color: var(--text-primary, #333);
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .category-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px var(--card-shadow, rgba(0, 0, 0, 0.1));
+    }
+
+    .category-btn.active {
+        background: linear-gradient(135deg, var(--gradient-start, #2575fc) 0%, var(--gradient-end, #6a11cb) 100%);
+        color: white;
+        border-color: transparent;
+    }
+
+    /* Skeleton Loader */
+    .skeleton {
+        background: linear-gradient(90deg, var(--bg-secondary, #f0f0f0) 25%, var(--border-color, #e0e0e0) 50%, var(--bg-secondary, #f0f0f0) 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 15px;
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: 200% 0;
+        }
+
+        100% {
+            background-position: -200% 0;
+        }
+    }
+
+    /* Photo Counter */
+    .photo-counter {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+
+    /* Zoom Icon */
+    .zoom-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--gradient-start, #2575fc);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover .zoom-icon {
+        transform: translate(-50%, -50%) scale(1);
+    }
 </style>
 
 <header class="page-header-bg">
-    <ul class="circles"><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul>
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
     <div class="container text-center position-relative z-2">
-        <h1 class="display-4 fw-bold mb-2">Event Gallery</h1>
-        <p class="lead text-white-50">Capturing our department's best moments</p>
+        <h1 class="display-4 fw-bold mb-2" data-aos="fade-down">Event Gallery</h1>
+        <p class="lead text-white-50" data-aos="fade-up">Capturing our department's best moments</p>
     </div>
 </header>
 
 <div class="container mb-5">
-    <div class="row g-4">
+    <!-- Category Filter -->
+    <div class="category-filter" data-aos="fade-up">
+        <button class="category-btn active" data-category="all">
+            <i class="bi bi-grid-3x3-gap me-1"></i> All Photos
+        </button>
+        <button class="category-btn" data-category="events">
+            <i class="bi bi-calendar-event me-1"></i> Events
+        </button>
+        <button class="category-btn" data-category="workshops">
+            <i class="bi bi-tools me-1"></i> Workshops
+        </button>
+        <button class="category-btn" data-category="celebrations">
+            <i class="bi bi-balloon me-1"></i> Celebrations
+        </button>
+        <button class="category-btn" data-category="campus">
+            <i class="bi bi-building me-1"></i> Campus
+        </button>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="gallery-grid" id="galleryGrid">
         {% if photos %}
-            {% for photo in photos %}
-            <div class="col-md-4 col-sm-6" data-aos="zoom-in" data-aos-delay="{{ loop.index * 50 }}">
-                <div class="card border-0 shadow-lg hover-card h-100" 
-                     style="cursor: pointer; overflow: hidden; border-radius: 15px;"
-                     data-bs-toggle="modal" 
-                     data-bs-target="#photoModal" 
-                     data-src="{{ url_for('static', filename='uploads/' + photo.image_file) }}">
-                    
-                    <div class="position-relative overflow-hidden" style="height: 250px;">
-                        <img src="{{ url_for('static', filename='uploads/' + photo.image_file) }}" 
-                             class="w-100 h-100 object-fit-cover transition-transform" 
-                             alt="Gallery Photo"
-                             style="transition: transform 0.5s ease;">
-                    </div>
-                    
-                    {% if photo.caption %}
-                    <div class="card-footer bg-white border-0 text-center py-3">
-                        <p class="mb-0 text-muted fw-bold small">{{ photo.caption }}</p>
-                        <small class="text-muted" style="font-size: 0.7rem;">{{ photo.upload_date }}</small>
-                    </div>
-                    {% endif %}
-                </div>
+        {% for photo in photos %}
+        <div class="gallery-item shadow" data-aos="zoom-in" data-aos-delay="{{ loop.index * 30 }}"
+            data-category="{{ photo.caption.split()[0]|lower if photo.caption else 'events' }}" data-bs-toggle="modal"
+            data-bs-target="#photoModal" data-src="{{ url_for('static', filename='uploads/' + photo.image_file) }}"
+            data-caption="{{ photo.caption }}" data-index="{{ loop.index0 }}">
+
+            <img src="{{ url_for('static', filename='uploads/' + photo.image_file) }}" alt="{{ photo.caption }}"
+                loading="lazy" onload="this.parentElement.classList.add('loaded')">
+
+            <div class="zoom-icon">
+                <i class="bi bi-zoom-in"></i>
             </div>
-            {% endfor %}
+
+            <div class="gallery-overlay">
+                {% if photo.caption %}
+                <h6>{{ photo.caption }}</h6>
+                {% endif %}
+                <small>{{ photo.upload_date }}</small>
+            </div>
+        </div>
+        {% endfor %}
         {% else %}
-            <div class="col-12 text-center py-5">
-                <div class="p-5 bg-white rounded-3 shadow-sm border border-dashed" data-aos="fade-up">
-                    <i class="bi bi-camera-fill fs-1 text-muted mb-3"></i>
-                    <h3 class="text-muted">No photos yet</h3>
-                    <p class="text-muted">New event photos will appear here soon.</p>
-                </div>
+        <div class="col-12 text-center py-5">
+            <div class="p-5 rounded-3 shadow-sm border border-dashed" style="background: var(--card-bg);"
+                data-aos="fade-up">
+                <i class="bi bi-camera-fill fs-1 text-muted mb-3"></i>
+                <h3 class="text-muted">No photos yet</h3>
+                <p class="text-muted">New event photos will appear here soon.</p>
             </div>
+        </div>
         {% endif %}
     </div>
-</div>
 
-<style>
-    .hover-card:hover img { transform: scale(1.1); }
-</style>
+    <!-- Photo Count -->
+    {% if photos %}
+    <div class="text-center mt-4">
+        <span class="badge bg-secondary rounded-pill px-4 py-2">
+            <i class="bi bi-images me-2"></i><span id="photoCount">{{ photos|length }}</span> Photos
+        </span>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // ========== CATEGORY FILTER ==========
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const photoCountEl = document.getElementById('photoCount');
+
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            categoryBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const category = this.getAttribute('data-category');
+            let visibleCount = 0;
+
+            galleryItems.forEach(item => {
+                const itemCategory = item.getAttribute('data-category');
+
+                if (category === 'all' || itemCategory === category || itemCategory.includes(category)) {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeInUp 0.4s ease forwards';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            if (photoCountEl) {
+                photoCountEl.textContent = visibleCount;
+            }
+        });
+    });
+
+    // Animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+`;
+    document.head.appendChild(style);
+
+    // ========== ENHANCED MODAL ==========
+    const galleryPhotos = [];
+    document.querySelectorAll('.gallery-item').forEach((item, index) => {
+        galleryPhotos.push({
+            src: item.getAttribute('data-src'),
+            caption: item.getAttribute('data-caption') || ''
+        });
+    });
+
+    // Update the global gallery photos for navigation
+    if (typeof window.galleryPhotos === 'undefined') {
+        window.galleryPhotos = galleryPhotos;
+    }
+
+    // Lazy loading with Intersection Observer
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    observer.unobserve(img);
+                }
+            });
+        }, { rootMargin: '50px' });
+
+        document.querySelectorAll('.gallery-item img[loading="lazy"]').forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
+</script>
 {% endblock %}

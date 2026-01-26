@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,40 +12,140 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
+        /* --- CSS VARIABLES FOR THEMING --- */
+        :root {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --card-bg: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --border-color: #e9ecef;
+            --footer-bg: #212529;
+            --gradient-start: #007bff;
+            --gradient-end: #6f42c1;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #e9ecef;
+            --text-secondary: #adb5bd;
+            --card-bg: #2d2d2d;
+            --card-shadow: rgba(0, 0, 0, 0.4);
+            --border-color: #404040;
+            --footer-bg: #0d0d0d;
+            --gradient-start: #0d6efd;
+            --gradient-end: #7c3aed;
+        }
+
         /* --- GLOBAL THEME STYLES --- */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; display: flex; flex-direction: column; min-height: 100vh; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
         /* 1. ANIMATED HEADER BACKGROUND */
         .page-header-bg {
-            background: linear-gradient(135deg, #007bff 0%, #6f42c1 100%);
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
             position: relative;
             padding: 140px 0 80px 0;
             color: white;
             overflow: hidden;
             border-radius: 0 0 30px 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px var(--card-shadow);
             margin-bottom: 40px;
         }
 
         /* 2. FLOATING BUBBLES ANIMATION */
-        .circles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; margin: 0; padding: 0; }
-        .circles li {
-            position: absolute; display: block; list-style: none;
-            width: 20px; height: 20px; background: rgba(255, 255, 255, 0.2);
-            animation: animate 25s linear infinite; bottom: -150px; border-radius: 50%;
-        }
-        .circles li:nth-child(1){ left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
-        .circles li:nth-child(2){ left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
-        .circles li:nth-child(3){ left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
-        .circles li:nth-child(4){ left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
-        .circles li:nth-child(5){ left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
-        .circles li:nth-child(6){ left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
-        @keyframes animate {
-            0%{ transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
-            100%{ transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        .circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            margin: 0;
+            padding: 0;
         }
 
-        /* 3. NEW GLASS NAVBAR */
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+        }
+
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .circles li:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .circles li:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+
+        /* 3. GLASS NAVBAR */
         .navbar-custom {
             background: rgba(255, 255, 255, 0.05) !important;
             backdrop-filter: blur(10px);
@@ -55,7 +156,10 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .navbar-brand { font-weight: 700; letter-spacing: 1px; }
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
 
         .nav-link {
             font-weight: 500;
@@ -65,67 +169,311 @@
             border-radius: 20px;
             padding: 8px 20px !important;
         }
-        .nav-link:hover, .nav-link.active {
+
+        .nav-link:hover,
+        .nav-link.active {
             background: rgba(255, 255, 255, 0.2);
             color: #fff !important;
             transform: translateY(-2px);
         }
 
-        /* --- MOBILE FIXES --- */
+        /* 4. DARK MODE TOGGLE */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(20deg);
+        }
+
+        /* 5. MOBILE SLIDE-IN MENU */
         @media (max-width: 991px) {
             .navbar-collapse {
-                background: rgba(0, 0, 0, 0.95); /* Darker background for better readability */
-                backdrop-filter: blur(15px);
-                padding: 20px;
-                border-radius: 15px;
-                margin-top: 15px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+                padding: 80px 30px 30px 30px;
+                transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1050;
+                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
+                overflow-y: auto;
             }
+
+            .navbar-collapse.show {
+                right: 0;
+            }
+
+            .mobile-menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 1040;
+            }
+
+            .mobile-menu-overlay.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .mobile-close-btn {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+
+            .mobile-close-btn:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: rotate(90deg);
+            }
+
             .nav-link {
                 text-align: center;
-                margin-bottom: 5px;
+                margin-bottom: 10px;
+                padding: 12px 20px !important;
+                font-size: 1.1rem;
             }
-            .btn-light { width: 100%; margin-top: 10px; }
+
+            .btn-light,
+            .btn-warning {
+                width: 100%;
+                margin-top: 15px;
+            }
         }
 
-        /* 4. CARD ANIMATIONS */
+        /* 6. CARD ANIMATIONS */
         .hover-card {
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: none; border-radius: 15px; overflow: hidden;
-        }
-        .hover-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2) !important;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            background: var(--card-bg);
         }
 
-        footer { margin-top: auto; }
+        .hover-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--card-shadow) !important;
+        }
+
+        /* 7. TOAST NOTIFICATIONS */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .custom-toast {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: slideIn 0.4s ease;
+            margin-bottom: 10px;
+        }
+
+        .custom-toast.success {
+            border-left: 4px solid #28a745;
+        }
+
+        .custom-toast.error {
+            border-left: 4px solid #dc3545;
+        }
+
+        .custom-toast.info {
+            border-left: 4px solid #17a2b8;
+        }
+
+        .custom-toast.warning {
+            border-left: 4px solid #ffc107;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* 8. LOADING SPINNER */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .spinner-custom {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 9. DARK MODE CARD STYLES */
+        [data-theme="dark"] .card {
+            background: var(--card-bg);
+            border-color: var(--border-color);
+        }
+
+        [data-theme="dark"] .text-muted {
+            color: var(--text-secondary) !important;
+        }
+
+        [data-theme="dark"] .bg-light {
+            background: var(--bg-secondary) !important;
+        }
+
+        [data-theme="dark"] .table {
+            --bs-table-bg: var(--card-bg);
+            --bs-table-color: var(--text-primary);
+        }
+
+        footer {
+            margin-top: auto;
+            background: var(--footer-bg) !important;
+        }
     </style>
 </head>
+
 <body class="d-flex flex-column min-vh-100">
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileOverlay"></div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="text-center text-white">
+            <div class="spinner-custom mb-3"></div>
+            <p class="mb-0">Loading...</p>
+        </div>
+    </div>
 
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <div class="container">
             <a class="navbar-brand fs-4" href="{{ url_for('home') }}">
                 <i class="bi bi-cpu-fill me-2"></i>IT Department Portal
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+
+            <!-- Theme Toggle & Hamburger -->
+            <div class="d-flex align-items-center gap-2">
+                <button class="theme-toggle d-lg-none" onclick="toggleTheme()" title="Toggle Dark Mode">
+                    <i class="bi bi-moon-fill" id="themeIconMobile"></i>
+                </button>
+                <button class="navbar-toggler border-0" type="button" onclick="toggleMobileMenu()">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
             <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Mobile Close Button -->
+                <button class="mobile-close-btn d-lg-none" onclick="toggleMobileMenu()">
+                    <i class="bi bi-x"></i>
+                </button>
+
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'home' }}" href="{{ url_for('home') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'events' }}" href="{{ url_for('events') }}">Events</a></li>
-                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'gallery' }}" href="{{ url_for('gallery') }}">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'materials' }}" href="{{ url_for('materials') }}">Materials</a></li>
+                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'home' }}"
+                            href="{{ url_for('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'events' }}"
+                            href="{{ url_for('events') }}">Events</a></li>
+                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'gallery' }}"
+                            href="{{ url_for('gallery') }}">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'materials' }}"
+                            href="{{ url_for('materials') }}">Materials</a></li>
+
+                    <!-- Theme Toggle for Desktop -->
+                    <li class="nav-item d-none d-lg-block ms-2">
+                        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">
+                            <i class="bi bi-moon-fill" id="themeIconDesktop"></i>
+                        </button>
+                    </li>
 
                     {% if session.get('admin') %}
-                        <li class="nav-item ms-lg-3">
-                            <a class="btn btn-warning text-dark fw-bold rounded-pill px-4 shadow-sm" href="{{ url_for('dashboard') }}">Dashboard</a>
-                        </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-warning text-dark fw-bold rounded-pill px-4 shadow-sm"
+                            href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
                     {% else %}
-                        <li class="nav-item ms-lg-3">
-                            <a class="btn btn-light text-primary fw-bold rounded-pill px-4 shadow-sm" href="{{ url_for('login') }}">Login</a>
-                        </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-light text-primary fw-bold rounded-pill px-4 shadow-sm"
+                            href="{{ url_for('login') }}">Login</a>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
@@ -134,18 +482,36 @@
 
     {% block content %}{% endblock %}
 
-    <footer class="bg-dark text-white text-center py-4">
+    <footer class="text-white text-center py-4">
         <div class="container">
-            <p class="mb-0 text-white-50 small">&copy; 2026 Dept of Information Technology. Built with Python & Flask. Developed by Silvest</p>
+            <p class="mb-0 text-white-50 small">&copy; 2026 Dept of Information Technology. Built with Python & Flask.
+                Developed by Silvest</p>
         </div>
     </footer>
 
+    <!-- Photo Modal with Navigation -->
     <div class="modal fade" id="photoModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content bg-transparent border-0">
                 <div class="modal-body text-center p-0 position-relative">
-                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-3" data-bs-dismiss="modal"></button>
-                    <img id="modalImage" src="" class="img-fluid rounded shadow-lg" style="max-height: 85vh; border: 3px solid white;">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-3"
+                        data-bs-dismiss="modal"></button>
+
+                    <!-- Previous/Next Buttons -->
+                    <button
+                        class="btn btn-light rounded-circle position-absolute start-0 top-50 translate-middle-y ms-2 z-3"
+                        id="prevPhoto" onclick="navigatePhoto(-1)" style="width: 45px; height: 45px;">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button
+                        class="btn btn-light rounded-circle position-absolute end-0 top-50 translate-middle-y me-2 z-3"
+                        id="nextPhoto" onclick="navigatePhoto(1)" style="width: 45px; height: 45px;">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+
+                    <img id="modalImage" src="" class="img-fluid rounded shadow-lg"
+                        style="max-height: 85vh; border: 3px solid white;">
+                    <p id="modalCaption" class="text-white mt-3 mb-0"></p>
                 </div>
             </div>
         </div>
@@ -156,17 +522,141 @@
     <script>
         AOS.init({ once: true, offset: 50, duration: 800 });
 
-        // Modal Logic for Gallery
-        document.addEventListener("DOMContentLoaded", function() {
+        // ========== DARK MODE ==========
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+
+        function updateThemeIcons(theme) {
+            const icons = document.querySelectorAll('#themeIconDesktop, #themeIconMobile');
+            icons.forEach(icon => {
+                icon.className = theme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+            });
+        }
+
+        // Load saved theme
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcons(savedTheme);
+        });
+
+        // ========== MOBILE MENU ==========
+        function toggleMobileMenu() {
+            const nav = document.getElementById('navbarNav');
+            const overlay = document.getElementById('mobileOverlay');
+            nav.classList.toggle('show');
+            overlay.classList.toggle('show');
+            document.body.style.overflow = nav.classList.contains('show') ? 'hidden' : '';
+        }
+
+        document.getElementById('mobileOverlay').addEventListener('click', toggleMobileMenu);
+
+        // ========== TOAST NOTIFICATIONS ==========
+        function showToast(message, type = 'info', duration = 4000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `custom-toast ${type}`;
+
+            const icons = {
+                success: 'bi-check-circle-fill text-success',
+                error: 'bi-x-circle-fill text-danger',
+                warning: 'bi-exclamation-triangle-fill text-warning',
+                info: 'bi-info-circle-fill text-info'
+            };
+
+            toast.innerHTML = `
+                <i class="bi ${icons[type]} fs-4"></i>
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()" class="btn-close ms-auto" style="font-size: 0.7rem;"></button>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.4s ease forwards';
+                setTimeout(() => toast.remove(), 400);
+            }, duration);
+        }
+
+        // ========== LOADING OVERLAY ==========
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('show');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        }
+
+        // Auto-show loading on form submit
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function () {
+                showLoading();
+            });
+        });
+
+        // ========== GALLERY MODAL NAVIGATION ==========
+        let galleryPhotos = [];
+        let currentPhotoIndex = 0;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Collect all gallery photos
+            const photoCards = document.querySelectorAll('[data-bs-target="#photoModal"]');
+            galleryPhotos = Array.from(photoCards).map(card => ({
+                src: card.getAttribute('data-src'),
+                caption: card.querySelector('.card-title, .fw-bold, p')?.textContent || ''
+            }));
+
             var photoModal = document.getElementById('photoModal');
-            if(photoModal){
+            if (photoModal) {
                 photoModal.addEventListener('show.bs.modal', function (event) {
                     var button = event.relatedTarget;
                     var imageSrc = button.getAttribute('data-src');
                     document.getElementById('modalImage').src = imageSrc;
+
+                    // Find current index
+                    currentPhotoIndex = galleryPhotos.findIndex(p => p.src === imageSrc);
+                    updatePhotoNavigation();
                 });
             }
         });
+
+        function navigatePhoto(direction) {
+            currentPhotoIndex += direction;
+            if (currentPhotoIndex < 0) currentPhotoIndex = galleryPhotos.length - 1;
+            if (currentPhotoIndex >= galleryPhotos.length) currentPhotoIndex = 0;
+
+            const photo = galleryPhotos[currentPhotoIndex];
+            document.getElementById('modalImage').src = photo.src;
+            document.getElementById('modalCaption').textContent = photo.caption;
+            updatePhotoNavigation();
+        }
+
+        function updatePhotoNavigation() {
+            const prevBtn = document.getElementById('prevPhoto');
+            const nextBtn = document.getElementById('nextPhoto');
+            if (prevBtn && nextBtn) {
+                prevBtn.style.display = galleryPhotos.length > 1 ? 'block' : 'none';
+                nextBtn.style.display = galleryPhotos.length > 1 ? 'block' : 'none';
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function (e) {
+            const modal = document.getElementById('photoModal');
+            if (modal && modal.classList.contains('show')) {
+                if (e.key === 'ArrowLeft') navigatePhoto(-1);
+                if (e.key === 'ArrowRight') navigatePhoto(1);
+            }
+        });
     </script>
+
+    {% block scripts %}{% endblock %}
 </body>
+
 </html>

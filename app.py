@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import sqlite3
 import os
 from werkzeug.utils import secure_filename
@@ -19,6 +19,27 @@ def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
+
+def init_registration_table():
+    """Create event_registrations table if it doesn't exist"""
+    conn = get_db_connection()
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS event_registrations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            event_id INTEGER NOT NULL,
+            name TEXT NOT NULL,
+            dept_no TEXT NOT NULL,
+            class_section TEXT NOT NULL,
+            phone TEXT,
+            registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (event_id) REFERENCES events (id)
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+# Initialize registration table on startup
+init_registration_table()
 
 def log_activity(action):
     try:
@@ -45,6 +66,7 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    error = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -59,9 +81,9 @@ def login():
             return redirect(url_for('dashboard'))
         else:
             log_activity(f"Failed login attempt for: {username}")
-            flash('Invalid Credentials', 'danger')
+            error = 'invalid'  # Pass error type to template
             
-    return render_template('login.html')
+    return render_template('login.html', error=error)
 
 # --- ONLY ONE LOGOUT FUNCTION HERE ---
 @app.route('/logout')
@@ -78,8 +100,15 @@ def dashboard():
     events = conn.execute('SELECT * FROM events ORDER BY event_date DESC').fetchall()
     photos = conn.execute('SELECT * FROM gallery ORDER BY upload_date DESC').fetchall()
     materials = conn.execute('SELECT * FROM materials ORDER BY upload_date DESC').fetchall()
+    
+    # Get registration counts for each event
+    registrations = {}
+    for event in events:
+        count = conn.execute('SELECT COUNT(*) FROM event_registrations WHERE event_id = ?', (event['id'],)).fetchone()[0]
+        registrations[event['id']] = count
+    
     conn.close()
-    return render_template('dashboard.html', events=events, photos=photos, materials=materials)
+    return render_template('dashboard.html', events=events, photos=photos, materials=materials, registrations=registrations)
 
 # --- EVENTS ---
 @app.route('/events')
@@ -88,6 +117,72 @@ def events():
     events = conn.execute('SELECT * FROM events ORDER BY event_date DESC').fetchall()
     conn.close()
     return render_template('events.html', events=events)
+
+# --- EVENT REGISTRATION ---
+@app.route('/register/<int:event_id>', methods=['GET', 'POST'])
+def register_event(event_id):
+    conn = get_db_connection()
+    event = conn.execute('SELECT * FROM events WHERE id = ?', (event_id,)).fetchone()
+    
+    if not event:
+        conn.close()
+        flash('Event not found', 'error')
+        return redirect(url_for('events'))
+    
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        dept_no = request.form.get('dept_no', '').strip()
+        class_section = request.form.get('class_section', '').strip()
+        phone = request.form.get('phone', '').strip()
+        
+        if not name or not dept_no or not class_section:
+            flash('Name, Dept No. and Class Section are required', 'error')
+            return render_template('event_registration.html', event=event)
+        
+        # Check if already registered (by name and dept_no)
+        existing = conn.execute(
+            'SELECT * FROM event_registrations WHERE event_id = ? AND name = ? AND dept_no = ?',
+            (event_id, name, dept_no)
+        ).fetchone()
+        
+        if existing:
+            conn.close()
+            flash('You have already registered for this event!', 'warning')
+            return render_template('event_registration.html', event=event, already_registered=True)
+        
+        # Insert registration
+        conn.execute(
+            'INSERT INTO event_registrations (event_id, name, dept_no, class_section, phone) VALUES (?, ?, ?, ?, ?)',
+            (event_id, name, dept_no, class_section, phone)
+        )
+        conn.commit()
+        conn.close()
+        
+        log_activity(f"New registration for event '{event['title']}' by {name}")
+        flash('Registration successful! See you at the event.', 'success')
+        return redirect(url_for('registration_success', event_id=event_id))
+    
+    conn.close()
+    return render_template('event_registration.html', event=event)
+
+@app.route('/registration-success/<int:event_id>')
+def registration_success(event_id):
+    conn = get_db_connection()
+    event = conn.execute('SELECT * FROM events WHERE id = ?', (event_id,)).fetchone()
+    conn.close()
+    return render_template('registration_success.html', event=event)
+
+@app.route('/event-registrations/<int:event_id>')
+def view_event_registrations(event_id):
+    if not session.get('admin'): return redirect(url_for('login'))
+    conn = get_db_connection()
+    event = conn.execute('SELECT * FROM events WHERE id = ?', (event_id,)).fetchone()
+    registrations = conn.execute(
+        'SELECT * FROM event_registrations WHERE event_id = ? ORDER BY registration_date DESC',
+        (event_id,)
+    ).fetchall()
+    conn.close()
+    return render_template('event_registrations.html', event=event, registrations=registrations)
 
 @app.route('/add_event', methods=['POST'])
 def add_event():
@@ -128,6 +223,7 @@ def edit_event(event_id):
 def delete_event(event_id):
     if not session.get('admin'): return redirect(url_for('login'))
     conn = get_db_connection()
+    conn.execute('DELETE FROM event_registrations WHERE event_id = ?', (event_id,))
     conn.execute('DELETE FROM events WHERE id = ?', (event_id,))
     conn.commit()
     conn.close()

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Event Registrations - {{ event.title }}{% endblock %}
+
+{% block content %}
+<style>
+    .registrations-header {
+        background: linear-gradient(135deg, var(--gradient-start, #2575fc) 0%, var(--gradient-end, #6a11cb) 100%);
+        color: white;
+        padding: 120px 0 40px 0;
+        border-radius: 0 0 30px 30px;
+        margin-bottom: 40px;
+    }
+
+    .stats-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 10px 20px;
+        border-radius: 50px;
+        backdrop-filter: blur(10px);
+    }
+
+    .table-container {
+        background: var(--card-bg, white);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px var(--card-shadow, rgba(0, 0, 0, 0.1));
+        overflow: hidden;
+    }
+</style>
+
+<div class="registrations-header text-center">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <div class="container position-relative z-2">
+        <a href="{{ url_for('dashboard') }}" class="text-white text-decoration-none mb-3 d-inline-block">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </a>
+        <h1 class="display-5 fw-bold mb-3">{{ event.title }}</h1>
+        <div class="stats-badge">
+            <i class="bi bi-people-fill fs-5"></i>
+            <span class="fw-bold">{{ registrations|length }} Registrations</span>
+        </div>
+    </div>
+</div>
+
+<div class="container pb-5">
+    <div class="table-container">
+        <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold">
+                <i class="bi bi-list-check me-2 text-primary"></i>Registered Participants
+            </h5>
+            <span class="badge bg-primary rounded-pill px-3 py-2">
+                {{ event.event_date }}
+            </span>
+        </div>
+
+        {% if registrations %}
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">#</th>
+                        <th>Name</th>
+                        <th>Dept No.</th>
+                        <th>Class & Section</th>
+                        <th>Phone</th>
+                        <th>Registered On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reg in registrations %}
+                    <tr>
+                        <td class="ps-4 fw-bold text-muted">{{ loop.index }}</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="bg-primary bg-opacity-10 rounded-circle p-2">
+                                    <i class="bi bi-person text-primary"></i>
+                                </div>
+                                <span class="fw-semibold">{{ reg.name }}</span>
+                            </div>
+                        </td>
+                        <td><span class="badge bg-secondary">{{ reg.dept_no }}</span></td>
+                        <td>{{ reg.class_section }}</td>
+                        <td>{{ reg.phone or '-' }}</td>
+                        <td class="text-muted">{{ reg.registration_date[:16] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
+            <h5 class="text-muted">No registrations yet</h5>
+            <p class="text-muted mb-0">Share the event link to get more registrations!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

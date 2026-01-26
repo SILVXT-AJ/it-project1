@@ -6,81 +6,243 @@
 <style>
     /* --- HEADER STYLES --- */
     .materials-header {
-        background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+        background: linear-gradient(135deg, var(--gradient-start, #2575fc) 0%, var(--gradient-end, #6a11cb) 100%);
         color: white;
         padding: 100px 0 60px 0;
-
-        /* Full width logic */
         margin-left: calc(-50vw + 50%);
         margin-right: calc(-50vw + 50%);
         width: 100vw;
-
         border-radius: 0 0 30px 30px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 15px var(--card-shadow, rgba(0, 0, 0, 0.1));
         margin-bottom: 3rem;
-
-        /* --- THE FIX IS HERE --- */
-        position: relative; /* Keeps circles relative to this box */
-        overflow: hidden;   /* Cuts off circles that float outside */
+        position: relative;
+        overflow: hidden;
     }
 
     /* --- FLOATING BUBBLES ANIMATION --- */
-    .circles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0; z-index: 0; }
-    .circles li {
-        position: absolute; display: block; list-style: none;
-        width: 20px; height: 20px; background: rgba(255, 255, 255, 0.2);
-        animation: animate 25s linear infinite; bottom: -150px; border-radius: 50%;
+    .circles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        z-index: 0;
     }
-    .circles li:nth-child(1){ left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
-    .circles li:nth-child(2){ left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
-    .circles li:nth-child(3){ left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
-    .circles li:nth-child(4){ left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
-    .circles li:nth-child(5){ left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+
+    .circles li {
+        position: absolute;
+        display: block;
+        list-style: none;
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        animation: animate 25s linear infinite;
+        bottom: -150px;
+        border-radius: 50%;
+    }
+
+    .circles li:nth-child(1) {
+        left: 25%;
+        width: 80px;
+        height: 80px;
+        animation-delay: 0s;
+    }
+
+    .circles li:nth-child(2) {
+        left: 10%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 2s;
+        animation-duration: 12s;
+    }
+
+    .circles li:nth-child(3) {
+        left: 70%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 4s;
+    }
+
+    .circles li:nth-child(4) {
+        left: 40%;
+        width: 60px;
+        height: 60px;
+        animation-delay: 0s;
+        animation-duration: 18s;
+    }
+
+    .circles li:nth-child(5) {
+        left: 65%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 0s;
+    }
 
     @keyframes animate {
-        0%{ transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
-        100%{ transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+            border-radius: 0;
+        }
+
+        100% {
+            transform: translateY(-1000px) rotate(720deg);
+            opacity: 0;
+            border-radius: 50%;
+        }
+    }
+
+    /* --- SEARCH BAR --- */
+    .search-container {
+        max-width: 500px;
+        margin: 0 auto 30px auto;
+    }
+
+    .search-input {
+        background: var(--card-bg, white);
+        border: 2px solid var(--border-color, #e9ecef);
+        border-radius: 50px;
+        padding: 15px 25px 15px 50px;
+        font-size: 1rem;
+        width: 100%;
+        transition: all 0.3s ease;
+        color: var(--text-primary, #212529);
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: var(--gradient-start, #2575fc);
+        box-shadow: 0 0 0 4px rgba(37, 117, 252, 0.15);
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary, #6c757d);
+        font-size: 1.2rem;
+    }
+
+    .search-clear {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-secondary, #6c757d);
+        cursor: pointer;
+        display: none;
+        font-size: 1.2rem;
+        padding: 5px;
+    }
+
+    .search-clear.show {
+        display: block;
     }
 
     /* --- FILTER BUTTONS --- */
     .filter-btn {
-        border: 2px solid #e9ecef;
-        background: white;
-        color: #555;
+        border: 2px solid var(--border-color, #e9ecef);
+        background: var(--card-bg, white);
+        color: var(--text-primary, #555);
         font-weight: 600;
         transition: all 0.3s ease;
         padding: 8px 25px;
         border-radius: 50px;
         min-width: 100px;
     }
-    .filter-btn:hover { background: #f8f9fa; transform: translateY(-2px); }
+
+    .filter-btn:hover {
+        background: var(--bg-secondary, #f8f9fa);
+        transform: translateY(-2px);
+    }
+
     .filter-btn.active {
-        background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+        background: linear-gradient(135deg, var(--gradient-start, #2575fc) 0%, var(--gradient-end, #6a11cb) 100%);
         color: white;
         border-color: transparent;
         box-shadow: 0 4px 10px rgba(37, 117, 252, 0.3);
     }
 
     /* --- CARD STYLES --- */
-    .material-card .card { transition: transform 0.3s, box-shadow 0.3s; border: none; border-radius: 15px; overflow: hidden; }
-    .material-card .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+    .material-card .card {
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        background: var(--card-bg, white);
+    }
+
+    .material-card .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px var(--card-shadow, rgba(0, 0, 0, 0.1)) !important;
+    }
+
+    /* No Results */
+    .no-results {
+        display: none;
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .no-results.show {
+        display: block;
+    }
+
+    .no-results i {
+        font-size: 4rem;
+        color: var(--text-secondary, #6c757d);
+        opacity: 0.5;
+    }
 
     /* --- MOBILE FIXES --- */
     @media (max-width: 768px) {
         .materials-header {
-            padding-top: 80px; padding-bottom: 40px; border-radius: 0 0 20px 20px;
-            margin-left: -15px; margin-right: -15px; width: auto;
+            padding-top: 80px;
+            padding-bottom: 40px;
+            border-radius: 0 0 20px 20px;
+            margin-left: -15px;
+            margin-right: -15px;
+            width: auto;
         }
-        .materials-header h1 { font-size: 2.2rem; }
-        .materials-header p { font-size: 1rem; padding: 0 20px; }
-        .filter-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .filter-btn { flex: 1 1 auto; padding: 8px 15px; font-size: 0.9rem; max-width: 120px; }
+
+        .materials-header h1 {
+            font-size: 2.2rem;
+        }
+
+        .materials-header p {
+            font-size: 1rem;
+            padding: 0 20px;
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            flex: 1 1 auto;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            max-width: 120px;
+        }
     }
 </style>
 
 <div class="materials-header text-center">
     <ul class="circles">
-        <li></li><li></li><li></li><li></li><li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
     </ul>
 
     <div class="container position-relative z-2">
@@ -91,20 +253,33 @@
 
 <div class="container pb-5 mt-n5 position-relative z-2">
 
+    <!-- Search Bar -->
+    <div class="search-container position-relative" data-aos="fade-up">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" class="search-input" id="materialSearch"
+            placeholder="Search materials by title or subject..." autocomplete="off">
+        <button class="search-clear" id="searchClear" onclick="clearSearch()">
+            <i class="bi bi-x-circle-fill"></i>
+        </button>
+    </div>
+
+    <!-- Filter Buttons -->
     <div class="row justify-content-center mb-5">
         <div class="col-md-10 text-center">
             <div class="filter-container">
-                <button type="button" class="btn filter-btn active" onclick="filterMaterials('all', this)">All</button>
-                <button type="button" class="btn filter-btn" onclick="filterMaterials('1st Year', this)">1st Year</button>
-                <button type="button" class="btn filter-btn" onclick="filterMaterials('2nd Year', this)">2nd Year</button>
-                <button type="button" class="btn filter-btn" onclick="filterMaterials('3rd Year', this)">3rd Year</button>
+                <button type="button" class="btn filter-btn active" data-year="all">All</button>
+                <button type="button" class="btn filter-btn" data-year="1st Year">1st Year</button>
+                <button type="button" class="btn filter-btn" data-year="2nd Year">2nd Year</button>
+                <button type="button" class="btn filter-btn" data-year="3rd Year">3rd Year</button>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <!-- Materials Grid -->
+    <div class="row" id="materialsGrid">
         {% for mat in materials %}
-        <div class="col-md-6 col-lg-4 mb-4 material-card" data-year="{{ mat.target_year }}">
+        <div class="col-md-6 col-lg-4 mb-4 material-card" data-year="{{ mat.target_year }}"
+            data-title="{{ mat.title|lower }}" data-subject="{{ mat.subject|lower }}">
             <div class="card h-100 shadow-sm">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-start mb-3">
@@ -116,7 +291,8 @@
                         <span class="badge bg-light text-dark border me-1">{{ mat.target_year }}</span>
                         <span class="badge bg-light text-dark border">Sem {{ mat.semester }}</span>
                     </div>
-                    <a href="{{ mat.file_link }}" target="_blank" class="btn btn-outline-primary w-100 fw-bold rounded-pill">
+                    <a href="{{ mat.file_link }}" target="_blank"
+                        class="btn btn-outline-primary w-100 fw-bold rounded-pill">
                         <i class="bi bi-download me-2"></i>Download
                     </a>
                 </div>
@@ -129,21 +305,90 @@
         </div>
         {% endfor %}
     </div>
+
+    <!-- No Results Message -->
+    <div class="no-results" id="noResults">
+        <i class="bi bi-search mb-3 d-block"></i>
+        <h4>No materials found</h4>
+        <p class="text-muted">Try a different search term or filter</p>
+    </div>
 </div>
 
 <script>
-function filterMaterials(year, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    // ========== SEARCH FUNCTIONALITY ==========
+    const searchInput = document.getElementById('materialSearch');
+    const searchClear = document.getElementById('searchClear');
+    const materialsGrid = document.getElementById('materialsGrid');
+    const noResults = document.getElementById('noResults');
+    const filterBtns = document.querySelectorAll('.filter-btn');
 
-    let cards = document.querySelectorAll('.material-card');
-    cards.forEach(card => {
-        if (year === 'all' || card.getAttribute('data-year') === year) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
+    let currentFilter = 'all';
+
+    // Search input handler
+    searchInput.addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase().trim();
+        searchClear.classList.toggle('show', searchTerm.length > 0);
+        filterMaterials();
     });
-}
+
+    // Clear search
+    function clearSearch() {
+        searchInput.value = '';
+        searchClear.classList.remove('show');
+        filterMaterials();
+        searchInput.focus();
+    }
+
+    // Filter button click handler
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.getAttribute('data-year');
+            filterMaterials();
+        });
+    });
+
+    // Combined filter function
+    function filterMaterials() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.material-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const year = card.getAttribute('data-year');
+            const title = card.getAttribute('data-title');
+            const subject = card.getAttribute('data-subject');
+
+            // Check year filter
+            const yearMatch = currentFilter === 'all' || year === currentFilter;
+
+            // Check search filter
+            const searchMatch = searchTerm === '' ||
+                title.includes(searchTerm) ||
+                subject.includes(searchTerm);
+
+            if (yearMatch && searchMatch) {
+                card.style.display = 'block';
+                card.style.animation = 'fadeIn 0.3s ease';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Show/hide no results message
+        noResults.classList.toggle('show', visibleCount === 0 && cards.length > 0);
+    }
+
+    // Fade in animation
+    const style = document.createElement('style');
+    style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+`;
+    document.head.appendChild(style);
 </script>
 {% endblock %}

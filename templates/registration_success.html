@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Registration Successful - IT Department{% endblock %}
+
+{% block content %}
+<style>
+    .success-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 20px 60px;
+    }
+
+    .success-card {
+        background: var(--card-bg, white);
+        border-radius: 25px;
+        box-shadow: 0 20px 60px var(--card-shadow, rgba(0, 0, 0, 0.15));
+        padding: 50px;
+        max-width: 500px;
+        text-align: center;
+        animation: popIn 0.5s ease;
+    }
+
+    @keyframes popIn {
+        0% {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .success-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        animation: bounce 1s ease infinite;
+    }
+
+    @keyframes bounce {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .success-icon i {
+        font-size: 3rem;
+        color: white;
+    }
+
+    .confetti {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: -1;
+    }
+
+    .confetti-piece {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #ffc107;
+        animation: fall 3s ease-in-out infinite;
+    }
+
+    .confetti-piece:nth-child(2n) {
+        background: #28a745;
+        width: 8px;
+        height: 8px;
+    }
+
+    .confetti-piece:nth-child(3n) {
+        background: #2575fc;
+        width: 12px;
+        height: 12px;
+    }
+
+    .confetti-piece:nth-child(4n) {
+        background: #6a11cb;
+        width: 6px;
+        height: 6px;
+    }
+
+    @keyframes fall {
+        0% {
+            transform: translateY(-100vh) rotate(0deg);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(100vh) rotate(720deg);
+            opacity: 0;
+        }
+    }
+</style>
+
+<div class="confetti">
+    {% for i in range(20) %}
+    <div class="confetti-piece"
+        style="left: {{ range(0, 100)|random }}%; animation-delay: {{ range(0, 30)|random / 10 }}s; animation-duration: {{ range(20, 40)|random / 10 }}s;">
+    </div>
+    {% endfor %}
+</div>
+
+<div class="success-container">
+    <div class="success-card" data-aos="zoom-in">
+        <div class="success-icon">
+            <i class="bi bi-check-lg"></i>
+        </div>
+
+        <h2 class="fw-bold mb-3" style="color: #28a745;">Registration Successful!</h2>
+
+        <p class="text-muted mb-4">
+            You have successfully registered for <strong>{{ event.title }}</strong>.
+            We're excited to have you join us!
+        </p>
+
+        <div class="alert alert-success border-0 mb-4">
+            <div class="d-flex align-items-center justify-content-center gap-3">
+                <i class="bi bi-calendar-check fs-4"></i>
+                <div>
+                    <strong>{{ event.event_date }}</strong>
+                </div>
+            </div>
+        </div>
+
+        <p class="small text-muted mb-4">
+            <i class="bi bi-envelope me-1"></i>
+            We will contact you shortly.
+        </p>
+
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{{ url_for('events') }}" class="btn btn-primary rounded-pill px-4">
+                <i class="bi bi-calendar-event me-2"></i>View More Events
+            </a>
+            <a href="{{ url_for('home') }}" class="btn btn-outline-secondary rounded-pill px-4">
+                <i class="bi bi-house me-2"></i>Go Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
