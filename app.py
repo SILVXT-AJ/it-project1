@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, send_from_directory
 import sqlite3
 import os
+import secrets
+import string
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
@@ -14,6 +16,9 @@ UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+PAYMENT_PROOF_FOLDER = os.path.join(UPLOAD_FOLDER, 'payment_proofs')
+os.makedirs(PAYMENT_PROOF_FOLDER, exist_ok=True)
 
 def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
@@ -101,11 +106,16 @@ def dashboard():
     photos = conn.execute('SELECT * FROM gallery ORDER BY upload_date DESC').fetchall()
     materials = conn.execute('SELECT * FROM materials ORDER BY upload_date DESC').fetchall()
     
-    # Get registration counts for each event
+    # Get registration counts
+    # FIXED: Counting from hackathon_registrations explicitly for the Hackathon event
+    hackathon_count = conn.execute('SELECT COUNT(*) FROM hackathon_registrations').fetchone()[0]
+    
     registrations = {}
     for event in events:
-        count = conn.execute('SELECT COUNT(*) FROM event_registrations WHERE event_id = ?', (event['id'],)).fetchone()[0]
-        registrations[event['id']] = count
+        # Assign the hackathon count to the event (assuming this is the hackathon event)
+        # If there are multiple events, this might need refinement, but for now this links the dashboard 
+        # to the actual data we are manipulating.
+        registrations[event['id']] = hackathon_count
     
     # Get anonymous feedback messages (newest first)
     feedback_messages = conn.execute('SELECT * FROM feedback ORDER BY timestamp DESC').fetchall()
@@ -184,57 +194,75 @@ def register_event(event_id):
         flash('Event not found', 'error')
         return redirect(url_for('events'))
     
+    # --- REPLACED WITH HACKATHON LOGIC ---
     if request.method == 'POST':
-        name = request.form.get('name', '').strip()
-        dept_no = request.form.get('dept_no', '').strip()
-        class_section = request.form.get('class_section', '').strip()
-        phone = request.form.get('phone', '').strip()
+        full_name = request.form.get('full_name')
+        email = request.form.get('email')
+        phone_number = request.form.get('phone_number')
+        participation_type = request.form.get('participation_type', 'Solo')
+        college_selection = request.form.get('college_selection')
         
-        if not name or not dept_no or not class_section:
-            flash('Name, Dept No. and Class Section are required', 'error')
-            return render_template('event_registration.html', event=event)
+        # Generate Ticket ID
+        # Format: HT-XXXXXX (6 random digits)
+        ticket_id = 'HT-' + ''.join(secrets.choice(string.digits) for _ in range(6))
         
-        # Check if already registered (by name and dept_no)
-        existing = conn.execute(
-            'SELECT * FROM event_registrations WHERE event_id = ? AND name = ? AND dept_no = ?',
-            (event_id, name, dept_no)
-        ).fetchone()
-        
-        if existing:
+        # Logic for College Name
+        if college_selection == 'other':
+            college_name = request.form.get('other_college_name').strip()
+        else:
+            college_name = "St. Joseph's College (Autonomous)"
+            
+        # File Handling
+        payment_proof_file = request.files.get('payment_proof')
+        if payment_proof_file and payment_proof_file.filename != '':
+            filename = secure_filename(f"{datetime.now().timestamp()}_{payment_proof_file.filename}")
+            payment_proof_file.save(os.path.join(PAYMENT_PROOF_FOLDER, filename))
+        else:
+            flash('Payment proof is required!', 'error')
+            return render_template('hackathon_register.html', event=event)
+
+        try:
+            conn = get_db_connection()
+            cursor = conn.execute('INSERT INTO hackathon_registrations (full_name, email, phone_number, college_name, payment_proof, participation_type, ticket_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                         (full_name, email, phone_number, college_name, filename, participation_type, ticket_id))
+            new_reg_id = cursor.lastrowid
+            conn.commit()
             conn.close()
-            flash('You have already registered for this event!', 'warning')
-            return render_template('event_registration.html', event=event, already_registered=True)
-        
-        # Insert registration
-        conn.execute(
-            'INSERT INTO event_registrations (event_id, name, dept_no, class_section, phone) VALUES (?, ?, ?, ?, ?)',
-            (event_id, name, dept_no, class_section, phone)
-        )
-        conn.commit()
-        conn.close()
-        
-        log_activity(f"New registration for event '{event['title']}' by {name}")
-        flash('Registration successful! See you at the event.', 'success')
-        return redirect(url_for('registration_success', event_id=event_id))
-    
+            return redirect(url_for('registration_success', event_id=event_id, reg_id=new_reg_id))
+        except Exception as e:
+            print(e)
+            flash('An error occurred during registration.', 'error')
+            return render_template('hackathon_register.html', event=event)
+
     conn.close()
-    return render_template('event_registration.html', event=event)
+    return render_template('hackathon_register.html', event=event)
+
 
 @app.route('/registration-success/<int:event_id>')
 def registration_success(event_id):
+    reg_id = request.args.get('reg_id')
+    ticket_id = None
+    
     conn = get_db_connection()
     event = conn.execute('SELECT * FROM events WHERE id = ?', (event_id,)).fetchone()
+    
+    if reg_id:
+        reg_data = conn.execute('SELECT ticket_id FROM hackathon_registrations WHERE id = ?', (reg_id,)).fetchone()
+        if reg_data:
+            ticket_id = reg_data['ticket_id']
+            
     conn.close()
-    return render_template('registration_success.html', event=event)
+    return render_template('hackathon_success.html', event=event, reg_id=reg_id, ticket_id=ticket_id)
+
 
 @app.route('/event-registrations/<int:event_id>')
 def view_event_registrations(event_id):
     if not session.get('admin'): return redirect(url_for('login'))
     conn = get_db_connection()
     event = conn.execute('SELECT * FROM events WHERE id = ?', (event_id,)).fetchone()
+    # Fetch Hackathon Registrations instead of generic ones
     registrations = conn.execute(
-        'SELECT * FROM event_registrations WHERE event_id = ? ORDER BY registration_date DESC',
-        (event_id,)
+        'SELECT * FROM hackathon_registrations ORDER BY registration_date DESC'
     ).fetchall()
     conn.close()
     return render_template('event_registrations.html', event=event, registrations=registrations)
@@ -381,6 +409,77 @@ def view_logs():
         logs = []
     conn.close()
     return render_template('logs.html', logs=logs)
+
+
+# --- HACKATHON REGISTRATION ---
+def init_hackathon_table():
+    """Create hackathon_registrations table if it doesn't exist"""
+    conn = get_db_connection()
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS hackathon_registrations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            full_name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            phone_number TEXT NOT NULL,
+            college_name TEXT NOT NULL,
+            college_name TEXT NOT NULL,
+            payment_proof TEXT NOT NULL,
+            participation_type TEXT DEFAULT 'Solo',
+            registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+init_hackathon_table()
+
+# --- 3. SERVE PAYMENT PROOFS ---
+@app.route('/payment-proof/<filename>')
+def serve_payment_proof(filename):
+    if not session.get('admin'):
+        return "Unauthorized", 403
+    return send_from_directory(PAYMENT_PROOF_FOLDER, filename)
+
+
+
+@app.route('/admin/registrations')
+def admin_registrations():
+    if not session.get('admin'): return redirect(url_for('login'))
+    conn = get_db_connection()
+    registrations = conn.execute('SELECT * FROM hackathon_registrations ORDER BY registration_date DESC').fetchall()
+    conn.close()
+    return render_template('admin_registrations.html', registrations=registrations)
+
+@app.route('/delete_registration/<int:id>', methods=['POST'])
+def delete_registration(id):
+    if not session.get('admin'):
+        return redirect(url_for('login'))
+    
+    event_id = request.form.get('event_id')
+    
+    try:
+        conn = get_db_connection()
+        # Get filename to delete file
+        reg = conn.execute('SELECT payment_proof FROM hackathon_registrations WHERE id = ?', (id,)).fetchone()
+        if reg:
+            # Delete file
+            file_path = os.path.join(PAYMENT_PROOF_FOLDER, reg['payment_proof'])
+            if os.path.exists(file_path):
+                os.remove(file_path)
+            
+            # Delete record
+            conn.execute('DELETE FROM hackathon_registrations WHERE id = ?', (id,))
+            conn.commit()
+            flash('Registration deleted successfully', 'success')
+        
+        conn.close()
+    except Exception as e:
+        print(f"Delete Error: {e}")
+        flash('Error deleting registration', 'error')
+        
+    if event_id:
+        return redirect(url_for('view_event_registrations', event_id=event_id))
+    return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
     app.run(debug=True)

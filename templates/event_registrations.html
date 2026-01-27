@@ -10,6 +10,8 @@
         padding: 120px 0 40px 0;
         border-radius: 0 0 30px 30px;
         margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
     }
 
     .stats-badge {
@@ -81,29 +83,65 @@
                 <thead class="table-light">
                     <tr>
                         <th class="ps-4">#</th>
+                        <th>Ticket ID</th>
                         <th>Name</th>
-                        <th>Dept No.</th>
-                        <th>Class & Section</th>
+                        <th>College</th>
                         <th>Phone</th>
+                        <th>Payment Proof</th>
                         <th>Registered On</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for reg in registrations %}
                     <tr>
                         <td class="ps-4 fw-bold text-muted">{{ loop.index }}</td>
+                        <td><span class="badge bg-dark bg-opacity-10 text-dark border">{{ reg.ticket_id or 'N/A'
+                                }}</span></td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 <div class="bg-primary bg-opacity-10 rounded-circle p-2">
                                     <i class="bi bi-person text-primary"></i>
                                 </div>
-                                <span class="fw-semibold">{{ reg.name }}</span>
+                                <span class="fw-semibold">{{ reg.full_name }}</span>
                             </div>
                         </td>
-                        <td><span class="badge bg-secondary">{{ reg.dept_no }}</span></td>
-                        <td>{{ reg.class_section }}</td>
-                        <td>{{ reg.phone or '-' }}</td>
+                        <td>
+                            {% if "St. Joseph" in reg.college_name %}
+                            <span
+                                class="badge bg-primary bg-opacity-10 text-primary border border-primary">Internal</span>
+                            {% else %}
+                            <span
+                                class="badge bg-warning bg-opacity-10 text-warning border border-warning">External</span>
+                            <div class="small fw-bold mt-1 text-wrap" style="max-width: 200px;">{{ reg.college_name }}
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>{{ reg.phone_number }}</td>
+                        <td>
+                            {% if reg.payment_proof %}
+                            <div style="position: relative; z-index: 99;">
+                                <a href="{{ url_for('serve_payment_proof', filename=reg.payment_proof) }}"
+                                    target="_blank" class="btn btn-sm btn-outline-primary rounded-pill">
+                                    <i class="bi bi-eye me-1"></i>View Screenshot
+                                </a>
+                            </div>
+                            {% else %}
+                            <span class="text-muted">No Proof</span>
+                            {% endif %}
+                        </td>
                         <td class="text-muted">{{ reg.registration_date[:16] }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_registration', id=reg.id) }}" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete this registration? This cannot be undone.');"
+                                style="display: inline;">
+                                <input type="hidden" name="event_id" value="{{ event.id }}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill"
+                                    title="Delete Registration">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

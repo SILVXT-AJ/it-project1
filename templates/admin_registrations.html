@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Hackathon Administrative - IT Department{% endblock %}
+
+{% block content %}
+<style>
+    .admin-header {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+        padding: 5rem 0 3rem 0;
+        margin-bottom: 3rem;
+        border-radius: 0 0 30px 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<!-- Header -->
+<div class="admin-header text-center">
+    <div class="container">
+        <h1 class="fw-bold"><i class="bi bi-database-fill-gear me-3"></i>Hackathon Registrations</h1>
+        <p class="lead opacity-75">Manage participant data and verify payments</p>
+        <a href="{{ url_for('dashboard') }}"
+            class="btn btn-light rounded-pill px-4 mt-3 fw-bold text-success shadow-sm">
+            <i class="bi bi-arrow-left me-2"></i>Back to Main Dashboard
+        </a>
+    </div>
+</div>
+
+<!-- Table Section -->
+<div class="container pb-5">
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-header bg-white p-4 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 fw-bold text-secondary">Participant List</h4>
+                <span class="badge bg-success rounded-pill px-3 py-2">Total: {{ registrations|length }}</span>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>Full Name</th>
+                            <th>College Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Payment Proof</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reg in registrations %}
+                        <tr>
+                            <td class="ps-4 fw-bold">#{{ reg.id }}</td>
+                            <td class="fw-semibold">{{ reg.full_name }}</td>
+                            <td>
+                                {% if "St. Joseph" in reg.college_name %}
+                                <span
+                                    class="badge bg-primary bg-opacity-10 text-primary border border-primary">Internal</span>
+                                {% else %}
+                                <span
+                                    class="badge bg-warning bg-opacity-10 text-warning border border-warning">External</span>
+                                <div class="small fw-bold mt-1">{{ reg.college_name }}</div>
+                                {% endif %}
+                            </td>
+                            <td>{{ reg.phone_number }}</td>
+                            <td><a href="mailto:{{ reg.email }}">{{ reg.email }}</a></td>
+                            <td>
+                                {% if reg.payment_proof %}
+                                <a href="{{ url_for('static', filename='uploads/payment_proofs/' ~ reg.payment_proof) }}"
+                                    target="_blank" class="btn btn-sm btn-outline-primary rounded-pill">
+                                    <i class="bi bi-eye me-1"></i>View Screenshot
+                                </a>
+                                {% else %}
+                                <span class="text-muted">No Proof</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-muted small">{{ reg.registration_date }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="bi bi-inbox fs-1 d-block mb-3 opacity-50"></i>
+                                No registrations found.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
