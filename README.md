@@ -34,7 +34,7 @@ A comprehensive **Content Management System (CMS)** built for the Department of 
 
 ---
 
-## 🔮 Future Improvements
+## 🔮 Future Improvement's
 
 We plan to upgrade this project with the following features:
 * **MySQL Migration:** Moving from SQLite to MySQL to handle larger student traffic and data concurrency.
