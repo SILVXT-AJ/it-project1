@@ -13,15 +13,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+            background-color: #FFFFFF;
+            /* White Background */
             margin: 0;
         }
 
         .login-card {
             width: 100%;
             max-width: 450px;
-            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
-            border: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eee;
             border-radius: 15px;
             overflow: hidden;
             animation: slideUp 0.5s ease;
@@ -40,10 +41,12 @@
         }
 
         .login-header {
-            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
-            color: white;
+            background: #FFFFFF;
+            color: #800000;
+            /* Maroon */
             padding: 2rem 1.5rem;
             text-align: center;
+            border-bottom: 2px solid #800000;
         }
 
         .login-header i {
@@ -76,18 +79,20 @@
         }
 
         .form-control:focus {
-            border-color: #2575fc;
-            box-shadow: 0 0 0 0.2rem rgba(37, 117, 252, 0.25);
+            border-color: #800000;
+            box-shadow: 0 0 0 0.2rem rgba(128, 0, 0, 0.15);
         }
 
         .btn-login {
-            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+            background: #800000;
+            /* Maroon */
             border: none;
             border-radius: 10px;
             padding: 0.75rem 1rem;
             font-weight: 600;
             font-size: 1.1rem;
-            color: white;
+            color: #F4C430;
+            /* Gold */
             width: 100%;
             transition: all 0.3s ease;
         }
@@ -104,17 +109,19 @@
         }
 
         .back-link {
-            color: white;
+            color: #800000;
+            /* Maroon */
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 20px;
             transition: transform 0.3s ease;
+            font-weight: 600;
         }
 
         .back-link:hover {
-            color: white;
+            color: #800000;
             transform: translateX(-5px);
         }
 
@@ -377,6 +384,12 @@
                 closeErrorModal();
             }
         });
+
+        // Disable right-click
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            alert("Right click has been blocked for security purposes!");
+        }, false);
     </script>
 </body>
 

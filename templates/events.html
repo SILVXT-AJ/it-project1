@@ -4,6 +4,16 @@
 
 {% block content %}
 <style>
+    /* Force white background for the entire page body on events page */
+    body {
+        background-color: #FFFFFF !important;
+    }
+
+    .page-header-bg {
+        margin-bottom: 0 !important;
+        /* Remove gap between header and content */
+    }
+
     /* This matches your Study Materials & Details Header style */
     .page-header {
         background: linear-gradient(135deg, var(--gradient-start, #2575fc) 0%, var(--gradient-end, #6a11cb) 100%);
@@ -68,27 +78,17 @@
     }
 </style>
 
-<div class="page-header-bg text-center">
+<div class="page-header-bg text-center"
+    style="background: #FFFFFF !important; color: #800000 !important; box-shadow: none !important; border-radius: 0 !important; border: none !important; outline: none !important;">
     <div class="container position-relative z-1">
-        <h1 class="display-4 fw-bold mb-3" data-aos="fade-down">Upcoming Events</h1>
-        <p class="lead opacity-75" data-aos="fade-up" data-aos-delay="100">Workshops, seminars, and cultural activities.
-        </p>
+        <h1 class="display-4 fw-bold mb-3" data-aos="fade-down" style="color: #800000;">Upcoming Events</h1>
+        <p class="lead opacity-100 fw-bold" data-aos="fade-up" data-aos-delay="100">Workshops, seminars, and cultural
+            activities.</p>
     </div>
-    <ul class="circles">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
+
 </div>
 
-<div class="container py-5 mt-n5 position-relative z-2">
+<div class="container py-5 position-relative z-2">
     <div class="row">
         {% for event in events %}
         <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ loop.index * 50 }}">

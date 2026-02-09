@@ -21,7 +21,7 @@
             --card-bg: #ffffff;
             --card-shadow: rgba(0, 0, 0, 0.1);
             --border-color: #e9ecef;
-            --footer-bg: #212529;
+            --footer-bg: #F4C430;
             --gradient-start: #007bff;
             --gradient-end: #6f42c1;
         }
@@ -153,15 +153,38 @@
             }
         }
 
-        /* 3. GLASS NAVBAR */
-        .navbar-custom {
-            background: rgba(255, 255, 255, 0.05) !important;
-            backdrop-filter: blur(10px);
-            position: absolute;
+        /* 3. GLASS NAVBAR (Inside Fixed Header) */
+        .header-fixed-wrapper {
+            position: fixed;
             top: 0;
             width: 100%;
             z-index: 1060;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar-custom {
+            background: rgba(128, 0, 0, 0.95) !important;
+            backdrop-filter: blur(10px);
+            /* Removed absolute/fixed */
+            width: 100%;
+            border-bottom: none;
+            position: relative;
+            z-index: 1060;
+        }
+
+        .dept-sub-header {
+            background-color: var(--footer-bg);
+            /* Gold */
+            color: #800000;
+            /* Red/Maroon */
+            text-align: center;
+            padding: 8px 0;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1055;
         }
 
         .navbar-brand {
@@ -180,9 +203,62 @@
 
         .nav-link:hover,
         .nav-link.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff !important;
+            background: #F4C430;
+            color: #800000 !important;
             transform: translateY(-2px);
+        }
+
+        .navbar-logo-large {
+            height: 120px !important;
+            width: 120px !important;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s ease;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 50%;
+            left: -130px;
+            transform: translateY(-40%);
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .est-year {
+            color: #800000;
+            /* Maroon */
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.2rem;
+            /* Increased size for script font legibility */
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
+            margin-top: -18px;
+            /* Slightly adjusted overlap */
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .brand-text-container {
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 991px) {
+            .navbar-logo-large {
+                height: 80px !important;
+                width: 80px !important;
+            }
+
+            .logo-container {
+                left: -90px;
+            }
+
+            .est-year {
+                font-size: 0.7rem;
+                margin-top: -10px;
+            }
         }
 
         /* 4. DARK MODE TOGGLE */
@@ -436,11 +512,12 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+            background: #800000;
+            /* Maroon */
             border: none;
             color: white;
             font-size: 1.5rem;
-            box-shadow: 0 8px 20px rgba(37, 117, 252, 0.4);
+            box-shadow: 0 8px 20px rgba(128, 0, 0, 0.4);
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
@@ -450,7 +527,7 @@
 
         .feedback-btn:hover {
             transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 10px 30px rgba(37, 117, 252, 0.6);
+            box-shadow: 0 10px 30px rgba(128, 0, 0, 0.6);
         }
 
         .feedback-popup {
@@ -474,7 +551,8 @@
         }
 
         .feedback-header {
-            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+            background: #800000;
+            /* Maroon */
             color: white;
             padding: 15px 20px;
             border-radius: 20px 20px 0 0;
@@ -568,60 +646,67 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-        <div class="container">
-            <a class="navbar-brand fs-4" href="{{ url_for('home') }}">
-                <i class="bi bi-cpu-fill me-2"></i>IT Department Portal
-            </a>
+    <div class="header-fixed-wrapper">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center ms-auto" href="{{ url_for('home') }}"
+                    style="margin-right: 150px; position: relative;">
+                    <div class="logo-container">
+                        <img src="{{ url_for('static', filename='uploads/sjc image.png') }}" alt="IT Logo"
+                            class="navbar-logo-large">
+                        <span class="est-year">Since 1844</span>
+                    </div>
+                    <div class="d-flex flex-column lh-1 brand-text-container">
+                        <span class="fs-5 fw-bold text-uppercase"
+                            style="letter-spacing: 1px; font-family: 'Times New Roman', serif;">St. Joseph's
+                            College</span>
+                        <span class="small fst-italic opacity-75 mt-1"
+                            style="font-size: 0.8rem; letter-spacing: 2px;">(Autonomous)</span>
+                    </div>
+                </a>
 
-            <!-- Theme Toggle & Hamburger -->
-            <div class="d-flex align-items-center gap-2">
-                <button class="theme-toggle d-lg-none" onclick="toggleTheme()" title="Toggle Dark Mode">
-                    <i class="bi bi-moon-fill" id="themeIconMobile"></i>
-                </button>
-                <button class="navbar-toggler border-0" type="button" onclick="toggleMobileMenu()">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <!-- Theme Toggle & Hamburger -->
+                <div class="d-flex align-items-center gap-2">
+                    <button class="navbar-toggler border-0" type="button" onclick="toggleMobileMenu()">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <!-- Mobile Close Button -->
+                    <button class="mobile-close-btn d-lg-none" onclick="toggleMobileMenu()">
+                        <i class="bi bi-x"></i>
+                    </button>
+
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'home' }}"
+                                href="{{ url_for('home') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'events' }}"
+                                href="{{ url_for('events') }}">Events</a></li>
+                        <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'gallery' }}"
+                                href="{{ url_for('gallery') }}">Gallery</a></li>
+                        <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'materials' }}"
+                                href="{{ url_for('materials') }}">Materials</a></li>
+
+                        <!-- Theme Toggle for Desktop (Removed) -->
+
+                        {% if session.get('admin') %}
+                        <li class="nav-item ms-lg-3">
+                            <a class="btn btn-warning text-dark fw-bold rounded-pill px-4 shadow-sm"
+                                href="{{ url_for('dashboard') }}">Dashboard</a>
+                        </li>
+
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
+        </nav>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <!-- Mobile Close Button -->
-                <button class="mobile-close-btn d-lg-none" onclick="toggleMobileMenu()">
-                    <i class="bi bi-x"></i>
-                </button>
-
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'home' }}"
-                            href="{{ url_for('home') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'events' }}"
-                            href="{{ url_for('events') }}">Events</a></li>
-                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'gallery' }}"
-                            href="{{ url_for('gallery') }}">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link {{ 'active' if request.endpoint == 'materials' }}"
-                            href="{{ url_for('materials') }}">Materials</a></li>
-
-                    <!-- Theme Toggle for Desktop -->
-                    <li class="nav-item d-none d-lg-block ms-2">
-                        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">
-                            <i class="bi bi-moon-fill" id="themeIconDesktop"></i>
-                        </button>
-                    </li>
-
-                    {% if session.get('admin') %}
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-warning text-dark fw-bold rounded-pill px-4 shadow-sm"
-                            href="{{ url_for('dashboard') }}">Dashboard</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-light text-primary fw-bold rounded-pill px-4 shadow-sm"
-                            href="{{ url_for('login') }}">Login</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
+        <!-- Second Navbar / Sub-Header -->
+        <div class="dept-sub-header">
+            DEPARTMENT OF INFORMATION TECHNOLOGY
         </div>
-    </nav>
+    </div>
 
     {% block content %}{% endblock %}
 
@@ -640,7 +725,7 @@
                 <form id="feedbackForm" method="POST" action="{{ url_for('submit_feedback') }}">
                     <textarea name="message" class="form-control mb-3" rows="4" placeholder="What's on your mind? 💭"
                         required maxlength="500"></textarea>
-                    <button type="submit" class="btn btn-primary w-100 fw-bold">
+                    <button type="submit" class="btn w-100 fw-bold" style="background-color: #F4C430; color: #800000;">
                         <i class="bi bi-send me-2"></i>Send Anonymously
                     </button>
                 </form>
@@ -653,10 +738,10 @@
         </button>
     </div>
 
-    <footer class="text-white text-center py-4">
+    <footer class="text-center py-4">
         <div class="container">
-            <p class="mb-0 text-white-50 small">&copy; 2026 Dept of Information Technology. Built with Python & Flask.
-                Developed by Silvest</p>
+            <p class="mb-0 small fw-bold">&copy; Copyright © St. Joseph's College 2026 . All rights reserved. Created by
+                Department of IT - Team</p>
         </div>
     </footer>
 

@@ -6,17 +6,14 @@
 <style>
     /* --- DASHBOARD STYLES --- */
     .dashboard-header {
-        background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
-        color: white;
-
-        /* !!! THIS IS THE FIX !!! */
-        /* We add 100px top padding to clear the floating navbar */
-        padding: 120px 0 40px 0;
-
+        background: #FFFFFF;
+        color: #800000;
+        /* Maroon */
+        padding: 130px 0 40px 0;
         margin: -1rem -1rem 2rem -1rem;
-        /* Keep negative margin to stretch full width */
-        border-radius: 0 0 30px 30px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 0;
+        border-bottom: none;
+        box-shadow: none;
     }
 
     .stats-card {
@@ -36,7 +33,7 @@
     .stats-number {
         font-size: 2.5rem;
         font-weight: 800;
-        color: #2575fc;
+        color: #800000;
     }
 
     /* --- FIX FOR INVISIBLE BUTTON TEXT --- */
@@ -53,25 +50,23 @@
     }
 
     .nav-pills .nav-link.active {
-        background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+        background: #800000;
         border-color: transparent;
-
-        /* ACTIVE BUTTON STAYS WHITE */
-        color: white !important;
-        box-shadow: 0 4px 10px rgba(37, 117, 252, 0.3);
+        color: #F4C430 !important;
+        /* Gold text */
+        box-shadow: 0 4px 10px rgba(128, 0, 0, 0.2);
     }
 
     /* FIX FOR HEADER BUTTONS (LOGS/LOGOUT) */
     .btn-dashboard-action {
-        background: rgba(255, 255, 255, 0.2);
-        color: white !important;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        backdrop-filter: blur(5px);
+        background: #F4C430;
+        color: #800000 !important;
+        border: 1px solid #800000;
     }
 
     .btn-dashboard-action:hover {
-        background: white;
-        color: #2575fc !important;
+        background: #800000;
+        color: #F4C430 !important;
     }
 
     .tab-content {
@@ -105,7 +100,7 @@
     <div class="row mb-5">
         <div class="col-md-4 mb-3">
             <div class="stats-card">
-                <i class="bi bi-calendar-event-fill fs-1 text-primary mb-2"></i>
+                <i class="bi bi-calendar-event-fill fs-1 mb-2" style="color: #800000;"></i>
                 <div class="stats-number">{{ events|length }}</div>
                 <div class="text-muted fw-bold">Total Events</div>
             </div>
@@ -162,7 +157,8 @@
 
         <div class="tab-pane fade show active" id="events">
             <div class="card bg-light border-0 p-4 mb-4 rounded-4">
-                <h4 class="mb-4 text-primary fw-bold"><i class="bi bi-plus-circle me-2"></i>Add New Event</h4>
+                <h4 class="mb-4 fw-bold" style="color: #800000;"><i class="bi bi-plus-circle me-2"></i>Add New Event
+                </h4>
                 <form method="POST" action="{{ url_for('add_event') }}" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -192,7 +188,8 @@
                         <label class="form-label fw-bold">Event Poster</label>
                         <input type="file" name="image_file" class="form-control" accept="image/*">
                     </div>
-                    <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm">Add Event</button>
+                    <button type="submit" class="btn fw-bold shadow-sm"
+                        style="background-color: #800000; color: #F4C430;">Add Event</button>
                 </form>
             </div>
 
@@ -378,7 +375,7 @@
 
         <div class="tab-pane fade" id="inbox">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="mb-0 text-primary fw-bold">
+                <h4 class="mb-0 fw-bold" style="color: #800000;">
                     <i class="bi bi-inbox me-2"></i>Anonymous Feedback Inbox
                 </h4>
                 {% if feedback_messages|length > 0 %}

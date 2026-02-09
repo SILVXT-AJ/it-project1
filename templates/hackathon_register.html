@@ -4,6 +4,20 @@
 
 {% block content %}
 <style>
+    /* Force white background for the entire page body */
+    body {
+        background-color: #FFFFFF !important;
+    }
+
+    .page-header-bg {
+        background: #FFFFFF !important;
+        color: #800000 !important;
+        padding-top: 130px;
+        padding-bottom: 40px;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+
     .registration-container {
         max-width: 800px;
         margin: 0 auto;
@@ -101,8 +115,9 @@
 
 <div class="page-header-bg text-center">
     <div class="container position-relative z-1">
-        <h1 class="display-4 fw-bold mb-3" data-aos="fade-down">Hackathon Registration</h1>
-        <p class="lead opacity-75" data-aos="fade-up" data-aos-delay="100">Join the ultimate coding battle!</p>
+        <h1 class="display-4 fw-bold mb-3" data-aos="fade-down" style="color: #800000;">Hackathon Registration</h1>
+        <p class="lead fw-bold" data-aos="fade-up" data-aos-delay="100" style="color: #800000; opacity: 0.8;">Join the
+            ultimate coding battle!</p>
     </div>
     <ul class="circles">
         <li></li>

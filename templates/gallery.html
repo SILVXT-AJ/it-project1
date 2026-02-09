@@ -4,18 +4,33 @@
 
 {% block content %}
 <style>
+    /* Force white background for the entire page body on gallery page */
+    body {
+        background-color: #FFFFFF !important;
+    }
+
     .gallery-header {
-        background: linear-gradient(135deg, var(--gradient-start, #2575fc) 0%, var(--gradient-end, #6a11cb) 100%);
-        color: white;
+        background: #FFFFFF !important;
+        color: #800000 !important;
         padding: 3rem 0;
-        margin: -1rem -1rem 2rem -1rem;
-        border-radius: 0 0 15px 15px;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
     }
 
     /* Masonry Grid Layout */
     .gallery-grid {
         column-count: 3;
         column-gap: 20px;
+    }
+
+    .page-header-bg {
+        background: #FFFFFF !important;
+        color: #800000 !important;
+        padding: 130px 0 40px 0;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        margin-bottom: 20px !important;
     }
 
     @media (max-width: 992px) {
@@ -92,9 +107,9 @@
     }
 
     .category-btn {
-        background: var(--card-bg, white);
-        border: 2px solid var(--border-color, #e9ecef);
-        color: var(--text-primary, #333);
+        background: #FFFFFF;
+        border: 2px solid #e9ecef;
+        color: #333;
         padding: 8px 20px;
         border-radius: 50px;
         font-weight: 600;
@@ -105,18 +120,18 @@
 
     .category-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 15px var(--card-shadow, rgba(0, 0, 0, 0.1));
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .category-btn.active {
-        background: linear-gradient(135deg, var(--gradient-start, #2575fc) 0%, var(--gradient-end, #6a11cb) 100%);
+        background: #800000;
         color: white;
         border-color: transparent;
     }
 
     /* Skeleton Loader */
     .skeleton {
-        background: linear-gradient(90deg, var(--bg-secondary, #f0f0f0) 25%, var(--border-color, #e0e0e0) 50%, var(--bg-secondary, #f0f0f0) 75%);
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
         background-size: 200% 100%;
         animation: shimmer 1.5s infinite;
         border-radius: 15px;
@@ -152,7 +167,7 @@
         left: 50%;
         transform: translate(-50%, -50%) scale(0);
         background: rgba(255, 255, 255, 0.9);
-        color: var(--gradient-start, #2575fc);
+        color: #800000;
         width: 50px;
         height: 50px;
         border-radius: 50%;
@@ -169,21 +184,10 @@
 </style>
 
 <header class="page-header-bg">
-    <ul class="circles">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
     <div class="container text-center position-relative z-2">
-        <h1 class="display-4 fw-bold mb-2" data-aos="fade-down">Event Gallery</h1>
-        <p class="lead text-white-50" data-aos="fade-up">Capturing our department's best moments</p>
+        <h1 class="display-4 fw-bold mb-2" data-aos="fade-down" style="color: #800000;">Event Gallery</h1>
+        <p class="lead fw-bold" data-aos="fade-up" style="color: #800000; opacity: 0.8;">Capturing our department's best
+            moments</p>
     </div>
 </header>
 

@@ -5,14 +5,30 @@
 {% block content %}
 <style>
     /* --- HERO SECTION STYLES --- */
+    /* --- HERO SECTION STYLES --- */
     .hero-section {
-        background: linear-gradient(135deg, var(--gradient-start, #007bff) 0%, var(--gradient-end, #6f42c1) 100%);
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url("{{ url_for('static', filename='uploads/church.jpg') }}") !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
         position: relative;
         padding: 220px 0 150px 0;
-        color: white;
+        color: white !important;
         overflow: hidden;
         margin-top: -100px;
         z-index: 1;
+    }
+
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: linear-gradient(to bottom, transparent, #e9ecef);
+        z-index: 2;
     }
 
     /* Floating Bubbles - Subtle */
@@ -150,47 +166,36 @@
 
     <div class="container position-relative z-2">
         <div class="row align-items-center">
-
-            <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0" data-aos="fade-right">
+            <div class="col-lg-10 text-start" data-aos="fade-up">
                 <span class="badge bg-white text-primary mb-3 px-3 py-2 rounded-pill shadow-sm">🚀 Welcome Future
                     Techies</span>
                 <h1 class="hero-heading">Department of Information Technology</h1>
-                <p class="lead mb-4 opacity-90">Innovation starts here. Empowering students with modern computing skills
-                    and technical excellence.</p>
+                <p class="mb-4 opacity-90 text-justify" style="font-size: 1rem; line-height: 1.6;">The Department of
+                    Information technology was bifurcated from the Department Of Computer Science in the year 2007. It
+                    offers programmes such as M.Sc. Computer Science (M.Sc. CS) with specialization of Data Science,
+                    M.Sc. Information Technology (M.Sc. IT) with specialization of Internet of Things, Bachelor of
+                    Computer Applications (BCA) and Post Graduate Diploma in Computer Science and Applications (PGDCSA).
+                    The Department is in the School of Computing Sciences, has the autonomy in framing courses for its
+                    various programmes. It is one among the biggest departments in Shift-II comprising of around 500
+                    students and 14 faculty members. Four of the faculty members have completed their Ph.D., and all the
+                    faculty members have completed their M.Phil., 8 of them have registered for the Ph.D. programme and
+                    are currently pursuing their research. One of the staff members has presented a paper in Singapore.
+                    One of the faculty members have qualified for both NET and SET, and one of them has qualified for
+                    SET. The department offers various training programmes for the students to make them industry ready.
+                    The Department has helped to place students in various MNCs. The students of the Department have
+                    developed software applications to assist the IQAC in choosing electives and student feedback. The
+                    Department has signed five MoUs with industries to promote placements and to provide industry
+                    exposure to the students during major projects as well as to provide training in the form of
+                    workshops, seminars in both ends.</p>
                 <a href="{{ url_for('events') }}" class="explore-btn">Explore Events</a>
-            </div>
-
-            <div class="col-lg-6 text-center" data-aos="fade-left" data-aos-delay="200">
-                <svg width="100%" height="auto" style="max-width: 450px;" viewBox="0 0 420 280"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <g>
-                        <ellipse cx="210" cy="245" rx="110" ry="18" fill="#000" opacity="0.12" />
-                        <rect x="90" y="40" rx="16" ry="16" width="240" height="170" fill="rgba(196,181,253,0.18)"
-                            stroke="#DDD6FE" stroke-width="1.2" />
-                        <rect x="90" y="40" width="240" height="32" rx="16" ry="16" fill="rgba(224,231,255,0.25)" />
-                        <circle cx="110" cy="56" r="5" fill="#A78BFA" />
-                        <circle cx="130" cy="56" r="5" fill="#C4B5FD" />
-                        <circle cx="150" cy="56" r="5" fill="#EDE9FE" />
-                        <rect x="110" y="90" width="160" height="10" rx="5" fill="#C4B5FD" />
-                        <rect x="110" y="110" width="120" height="10" rx="5" fill="#BFA7FF" />
-                        <rect x="110" y="130" width="140" height="10" rx="5" fill="#DDD6FE" />
-                        <rect x="110" y="150" width="100" height="10" rx="5" fill="#BFA7FF" />
-                        <rect x="110" y="170" width="150" height="10" rx="5" fill="#C4B5FD" />
-                    </g>
-                </svg>
             </div>
         </div>
     </div>
 
-    <div class="position-absolute bottom-0 start-0 w-100 overflow-hidden" style="line-height: 0;">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="width: 100%; height: 135px; display: block;">
-            <path d="m0,60 C150,120 350,0 600,60 C750,100 950,20 1200,60 L1200,120 L0,120 z"
-                fill="var(--bg-primary, #f8f9fa)"></path>
-        </svg>
-    </div>
+
 </section>
 
-<section class="py-5" style="background: var(--bg-primary);">
+<section class="py-5" style="background: #e9ecef;">
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-end mb-5">
             <div data-aos="fade-right">
@@ -233,7 +238,7 @@
     </div>
 </section>
 
-<section class="py-5 position-relative" style="background: var(--bg-primary);">
+<section class="py-5 position-relative" style="background: #e9ecef;">
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-end mb-5">
             <div data-aos="fade-right">
