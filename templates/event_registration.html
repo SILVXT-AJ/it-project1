@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Register for {{ event.title }} - IT Department{% endblock %}
+
+{% block content %}
+<style>
+    .registration-header {
+        background: linear-gradient(135deg, var(--gradient-start, #2575fc) 0%, var(--gradient-end, #6a11cb) 100%);
+        color: white;
+        padding: 120px 0 80px 0;
+        position: relative;
+        overflow: hidden;
+        border-radius: 0 0 30px 30px;
+        margin-bottom: 40px;
+    }
+
+    .registration-card {
+        background: var(--card-bg, white);
+        border-radius: 20px;
+        box-shadow: 0 15px 50px var(--card-shadow, rgba(0, 0, 0, 0.15));
+        overflow: hidden;
+        max-width: 600px;
+        margin: -60px auto 60px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .event-info {
+        background: linear-gradient(135deg, rgba(37, 117, 252, 0.1) 0%, rgba(106, 17, 203, 0.1) 100%);
+        padding: 25px;
+        border-bottom: 1px solid var(--border-color, #e9ecef);
+    }
+
+    .form-section {
+        padding: 30px;
+    }
+
+    .form-control {
+        border: 2px solid var(--border-color, #e9ecef);
+        border-radius: 12px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--gradient-start, #2575fc);
+        box-shadow: 0 0 0 4px rgba(37, 117, 252, 0.1);
+    }
+
+    .btn-register {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 15px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: white;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
+        color: white;
+    }
+
+    .event-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: white;
+        padding: 8px 15px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        color: var(--gradient-start, #2575fc);
+        font-weight: 600;
+    }
+</style>
+
+<div class="registration-header text-center">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <div class="container position-relative z-2">
+        <span class="badge bg-white text-primary mb-3 px-3 py-2 rounded-pill">
+            <i class="bi bi-calendar-check me-1"></i> Event Registration
+        </span>
+        <h1 class="display-5 fw-bold mb-3">{{ event.title }}</h1>
+        <p class="lead opacity-75 mb-0">
+            <i class="bi bi-calendar3 me-2"></i>{{ event.event_date }}
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="registration-card" data-aos="fade-up">
+        <div class="event-info">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h5 class="fw-bold mb-2">{{ event.title }}</h5>
+                    <p class="text-muted mb-0">{{ event.description[:150] }}{% if event.description|length > 150 %}...{%
+                        endif %}</p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <div class="event-badge">
+                        <i class="bi bi-person-badge"></i>
+                        {{ event.event_manager }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            {% if already_registered %}
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+                <div>You have already registered for this event!</div>
+            </div>
+            {% endif %}
+
+            <h5 class="fw-bold mb-4">
+                <i class="bi bi-person-plus me-2 text-primary"></i>Fill Your Details
+            </h5>
+
+            <form method="POST" action="{{ url_for('register_event', event_id=event.id) }}" id="registrationForm">
+                <div class="mb-4">
+                    <label for="name" class="form-label fw-semibold">
+                        <i class="bi bi-person me-1"></i> Full Name <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name"
+                        required>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label for="dept_no" class="form-label fw-semibold">
+                            <i class="bi bi-hash me-1"></i> Department No. <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="dept_no" name="dept_no" placeholder="e.g. 22UBC512"
+                            required>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label for="class_section" class="form-label fw-semibold">
+                            <i class="bi bi-people me-1"></i> Class & Section <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="class_section" name="class_section"
+                            placeholder="e.g. III-BCA-A" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="phone" class="form-label fw-semibold">
+                        <i class="bi bi-phone me-1"></i> Phone Number
+                    </label>
+                    <input type="tel" class="form-control" id="phone" name="phone"
+                        placeholder="Enter your phone number (optional)">
+                </div>
+
+                <button type="submit" class="btn btn-register">
+                    <i class="bi bi-check-circle me-2"></i>Register Now
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <a href="{{ url_for('events') }}" class="text-decoration-none">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Events
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

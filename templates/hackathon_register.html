@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block title %}Hackathon Registration - IT Department{% endblock %}
+
+{% block content %}
+<style>
+    /* Force white background for the entire page body */
+    body {
+        background-color: #FFFFFF !important;
+    }
+
+    .page-header-bg {
+        background: #FFFFFF !important;
+        color: #800000 !important;
+        padding-top: 130px;
+        padding-bottom: 40px;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+
+    .registration-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: none;
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+        /* Energetic Gradient */
+        color: white;
+        padding: 40px;
+        text-align: center;
+        position: relative;
+    }
+
+    .form-header::after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        background: white;
+        border-radius: 50% 50% 0 0;
+    }
+
+    .form-body {
+        padding: 40px;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 10px;
+        padding: 12px 15px;
+        border: 2px solid #eee;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #FF4B2B;
+        box-shadow: 0 0 0 0.2rem rgba(255, 75, 43, 0.15);
+    }
+
+    .btn-submit {
+        background: linear-gradient(to right, #FF416C, #FF4B2B);
+        border: none;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: transform 0.3s, box-shadow 0.3s;
+        width: 100%;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 75, 43, 0.3);
+        color: white;
+    }
+
+    .asterisk {
+        color: #FF4B2B;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .registration-container {
+            padding: 20px 10px;
+            margin-top: -30px !important;
+            /* Reduce negative margin overlap */
+        }
+
+        .form-body {
+            padding: 20px;
+            /* Reduced padding inside form */
+        }
+
+        div.d-flex.gap-4 {
+            flex-direction: column;
+            /* Stack radio buttons */
+            gap: 1rem !important;
+        }
+    }
+</style>
+
+<div class="page-header-bg text-center">
+    <div class="container position-relative z-1">
+        <h1 class="display-4 fw-bold mb-3" data-aos="fade-down" style="color: #800000;">Hackathon Registration</h1>
+        <p class="lead fw-bold" data-aos="fade-up" data-aos-delay="100" style="color: #800000; opacity: 0.8;">Join the
+            ultimate coding battle!</p>
+    </div>
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+
+<div class="registration-container mt-n5 position-relative z-2">
+    <div class="card form-card" data-aos="fade-up">
+        <!-- Header removed, using main page header -->
+        <div class="form-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} mb-4">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('register_event', event_id=event.id) }}" method="POST"
+                enctype="multipart/form-data">
+                <!-- Full Name -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Full Name <span class="asterisk">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-0"><i
+                                class="bi bi-person-fill text-muted"></i></span>
+                        <input type="text" name="full_name" class="form-control" placeholder="Enter your full name"
+                            required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Email -->
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold">Email Address <span class="asterisk">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"><i
+                                    class="bi bi-envelope-fill text-muted"></i></span>
+                            <input type="email" name="email" class="form-control" placeholder="name@example.com"
+                                required>
+                        </div>
+                    </div>
+                    <!-- Phone -->
+                    <div class="col-md-6 mb-4">
+                        <label class="form-label fw-bold">Phone Number <span class="asterisk">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"><i
+                                    class="bi bi-telephone-fill text-muted"></i></span>
+                            <input type="tel" name="phone_number" class="form-control" placeholder="+91 98765 43210"
+                                required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Participation Type -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Participation Type <span class="asterisk">*</span></label>
+                    <div class="d-flex gap-4 p-3 border rounded bg-light">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="participation_type" id="typeSolo"
+                                value="Solo" checked>
+                            <label class="form-check-label fw-semibold" for="typeSolo">
+                                <i class="bi bi-person-fill me-1"></i>Solo
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="participation_type" id="typeTeam"
+                                value="Team">
+                            <label class="form-check-label fw-semibold" for="typeTeam">
+                                <i class="bi bi-people-fill me-1"></i>Team
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- College Selection -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Select Your College <span class="asterisk">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-0"><i
+                                class="bi bi-mortarboard-fill text-muted"></i></span>
+                        <select class="form-select" id="collegeSelection" name="college_selection"
+                            onchange="toggleCollegeInput()" required>
+                            <option value="" selected disabled>Choose your institution...</option>
+                            <option value="sjc">St. Joseph's College (Autonomous)</option>
+                            <option value="other">Other College</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Custom College Input (Hidden by default) -->
+                <div class="mb-4" id="otherCollegeDiv" style="display: none;">
+                    <label class="form-label fw-bold">Enter College Name <span class="asterisk">*</span></label>
+                    <input type="text" name="other_college_name" id="otherCollegeInput" class="form-control"
+                        placeholder="Type your college name here">
+                </div>
+
+                <!-- Payment Proof -->
+                <div class="mb-5">
+                    <label class="form-label fw-bold">Upload Payment Proof <span class="asterisk">*</span></label>
+                    <p class="text-muted small mb-2"><i class="bi bi-info-circle me-1"></i>Please upload a screenshot of
+                        your payment transaction (Max 1MB).</p>
+                    <input type="file" name="payment_proof" class="form-control" accept="image/*" required>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-submit shadow-lg mb-3">
+                    Register Now <i class="bi bi-arrow-right-circle ms-2"></i>
+                </button>
+
+                <div class="text-center text-muted small">
+                    Need help? Contact Admin: <span class="fw-bold text-dark">+91 98765 43210</span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleCollegeInput() {
+        const selectBox = document.getElementById('collegeSelection');
+        const otherDiv = document.getElementById('otherCollegeDiv');
+        const otherInput = document.getElementById('otherCollegeInput');
+
+        if (selectBox.value === 'other') {
+            otherDiv.style.display = 'block';
+            otherInput.setAttribute('required', 'required');
+            // Adding a small animation effect
+            otherDiv.style.opacity = 0;
+            setTimeout(() => { otherDiv.style.transition = 'opacity 0.3s'; otherDiv.style.opacity = 1; }, 10);
+        } else {
+            otherDiv.style.display = 'none';
+            otherInput.removeAttribute('required');
+        }
+    }
+</script>
+{% endblock %}

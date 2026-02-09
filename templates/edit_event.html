@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Event - IT Department Portal{% endblock %}
+
+{% block content %}
+<style>
+.edit-header {
+    background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+    color: white;
+    padding: 6rem 0 2rem 0;
+    margin: -1rem -1rem 3rem -1rem;
+    border-radius: 0 0 30px 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.form-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+.form-control {
+    border-radius: 10px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border: 2px solid #f1f3f5;
+}
+</style>
+
+<div class="edit-header text-center">
+    <div class="container">
+        <h1 class="fw-bold mb-2"><i class="bi bi-pencil-square me-2"></i>Edit Event</h1>
+        <p class="opacity-75 mb-0">Update details for "{{ event.title }}"</p>
+    </div>
+</div>
+
+<div class="container pb-5" style="margin-top: -50px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card form-card bg-white">
+                <div class="card-body p-5">
+                    <form method="POST" action="{{ url_for('edit_event', event_id=event.id) }}">
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Event Title</label>
+                            <input type="text" name="title" class="form-control" value="{{ event.title }}" required>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Event Date</label>
+                                <input type="date" name="event_date" class="form-control" value="{{ event.event_date }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Contact Number</label>
+                                <input type="tel" name="contact_number" class="form-control" value="{{ event.contact_number }}" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Event Manager</label>
+                            <input type="text" name="event_manager" class="form-control" value="{{ event.event_manager }}" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea name="description" class="form-control" rows="5">{{ event.description }}</textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-5">
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-light rounded-pill px-4 fw-bold">Cancel</a>
+                            <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

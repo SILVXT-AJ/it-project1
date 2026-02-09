@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Achievements - IT Department Portal{% endblock %}
+
+{% block content %}
+<style>
+.page-header {
+    background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+    color: white;
+    padding: 5rem 0 150px 0;
+    position: relative;
+    overflow: hidden;
+}
+.page-header .container {
+    position: relative;
+    z-index: 2;
+}
+.page-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+.page-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+.wave-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+.wave-divider svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 150px;
+}
+.wave-divider .shape-fill {
+    fill: #ffffff;
+}
+.achievement-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    border: none;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 2rem;
+}
+.achievement-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.2);
+}
+.achievement-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+.card-body {
+    padding: 1.5rem;
+}
+.card-title {
+    color: #2575fc;
+    font-weight: bold;
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+.card-text {
+    color: #6c757d;
+    line-height: 1.6;
+}
+</style>
+
+<!-- Header Section -->
+<section class="page-header">
+    <div class="container text-center">
+        <h1 class="page-title">Student Hall of Fame</h1>
+        <p class="page-subtitle">Celebrating Excellence and Innovation</p>
+    </div>
+    <!-- Wave Divider -->
+    <div class="wave-divider">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="m0,60 C150,120 350,0 600,60 C750,100 950,20 1200,60 L1200,120 L0,120 z" class="shape-fill"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Content Grid -->
+<div class="container py-5">
+    <div class="row">
+        {% if blogs %}
+            {% for blog in blogs %}
+            <div class="col-md-4 mb-4">
+                <div class="achievement-card">
+                    {% if blog.image_url %}
+                    <img src="{{ blog.image_url }}" alt="{{ blog.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ blog.title }}</h5>
+                        <p class="card-text">{{ blog.content }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- Demo Card 1 -->
+            <div class="col-md-4 mb-4">
+                <div class="achievement-card">
+                    <img src="https://source.unsplash.com/600x400/?coding" alt="1st Place - National Hackathon">
+                    <div class="card-body">
+                        <h5 class="card-title">1st Place - National Hackathon</h5>
+                        <p class="card-text">Our team won the Gold Medal in the National Coding Competition, showcasing innovative solutions in web development and AI integration.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Demo Card 2 -->
+            <div class="col-md-4 mb-4">
+                <div class="achievement-card">
+                    <img src="https://source.unsplash.com/600x400/?ai" alt="AI Research Publication">
+                    <div class="card-body">
+                        <h5 class="card-title">AI Research Publication</h5>
+                        <p class="card-text">Published groundbreaking research on machine learning applications in IEEE Transactions, contributing to the advancement of AI in education.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Demo Card 3 -->
+            <div class="col-md-4 mb-4">
+                <div class="achievement-card">
+                    <img src="https://source.unsplash.com/600x400/?cloud" alt="Google Cloud Certification">
+                    <div class="card-body">
+                        <h5 class="card-title">Google Cloud Certification</h5>
+                        <p class="card-text">Achieved Associate Cloud Engineer certification, demonstrating expertise in cloud architecture and deployment best practices.</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

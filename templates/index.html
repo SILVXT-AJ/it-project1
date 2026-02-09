@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+
+{% block title %}Home - IT Department{% endblock %}
+
+{% block content %}
+<style>
+    /* --- HERO SECTION STYLES --- */
+    /* --- HERO SECTION STYLES --- */
+    .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url("{{ url_for('static', filename='uploads/church.jpg') }}") !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        position: relative;
+        padding: 220px 0 150px 0;
+        color: white !important;
+        overflow: hidden;
+        margin-top: -100px;
+        z-index: 1;
+    }
+
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 10px;
+        background: linear-gradient(to bottom, transparent, #e9ecef);
+        z-index: 2;
+    }
+
+    /* Floating Bubbles - Subtle */
+    .hero-circles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 0;
+        margin: 0;
+        padding: 0;
+        pointer-events: none;
+    }
+
+    .hero-circles li {
+        position: absolute;
+        display: block;
+        list-style: none;
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.15);
+        animation: float 20s linear infinite;
+        bottom: -150px;
+        border-radius: 50%;
+    }
+
+    .hero-circles li:nth-child(1) {
+        left: 25%;
+        width: 80px;
+        height: 80px;
+        animation-delay: 0s;
+    }
+
+    .hero-circles li:nth-child(2) {
+        left: 10%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 2s;
+        animation-duration: 15s;
+    }
+
+    .hero-circles li:nth-child(3) {
+        left: 70%;
+        width: 20px;
+        height: 20px;
+        animation-delay: 4s;
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0);
+            opacity: 0.5;
+        }
+
+        100% {
+            transform: translateY(-1000px);
+            opacity: 0;
+        }
+    }
+
+    .hero-heading {
+        font-size: 3.2rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            padding-top: 180px;
+            padding-bottom: 80px;
+        }
+
+        .hero-heading {
+            font-size: 2.2rem;
+        }
+
+        .col-lg-6 {
+            margin-bottom: 30px;
+        }
+    }
+
+    .explore-btn {
+        background: white;
+        color: #007bff;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 50px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .explore-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        color: #0056b3;
+    }
+
+    .section-header {
+        margin-bottom: 3rem;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-header::after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 4px;
+        background: #007bff;
+        bottom: -10px;
+        left: 0;
+        border-radius: 2px;
+    }
+
+    /* Ensure feedback widget is visible on home page */
+    .feedback-widget {
+        z-index: 1050 !important;
+        visibility: visible !important;
+        display: block !important;
+    }
+</style>
+
+<section class="hero-section" id="heroSection">
+    <ul class="hero-circles">
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <div class="container position-relative z-2">
+        <div class="row align-items-center">
+            <div class="col-lg-10 text-start" data-aos="fade-up">
+                <span class="badge bg-white text-primary mb-3 px-3 py-2 rounded-pill shadow-sm">🚀 Welcome Future
+                    Techies</span>
+                <h1 class="hero-heading">Department of Information Technology</h1>
+                <p class="mb-4 opacity-90 text-justify" style="font-size: 1rem; line-height: 1.6;">The Department of
+                    Information technology was bifurcated from the Department Of Computer Science in the year 2007. It
+                    offers programmes such as M.Sc. Computer Science (M.Sc. CS) with specialization of Data Science,
+                    M.Sc. Information Technology (M.Sc. IT) with specialization of Internet of Things, Bachelor of
+                    Computer Applications (BCA) and Post Graduate Diploma in Computer Science and Applications (PGDCSA).
+                    The Department is in the School of Computing Sciences, has the autonomy in framing courses for its
+                    various programmes. It is one among the biggest departments in Shift-II comprising of around 500
+                    students and 14 faculty members. Four of the faculty members have completed their Ph.D., and all the
+                    faculty members have completed their M.Phil., 8 of them have registered for the Ph.D. programme and
+                    are currently pursuing their research. One of the staff members has presented a paper in Singapore.
+                    One of the faculty members have qualified for both NET and SET, and one of them has qualified for
+                    SET. The department offers various training programmes for the students to make them industry ready.
+                    The Department has helped to place students in various MNCs. The students of the Department have
+                    developed software applications to assist the IQAC in choosing electives and student feedback. The
+                    Department has signed five MoUs with industries to promote placements and to provide industry
+                    exposure to the students during major projects as well as to provide training in the form of
+                    workshops, seminars in both ends.</p>
+                <a href="{{ url_for('events') }}" class="explore-btn">Explore Events</a>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+<section class="py-5" style="background: #e9ecef;">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-end mb-5">
+            <div data-aos="fade-right">
+                <h6 class="text-primary fw-bold text-uppercase ls-1">Stay Updated</h6>
+                <h2 class="fw-bold display-6 section-header">Latest Events</h2>
+            </div>
+            <a href="{{ url_for('events') }}" class="btn btn-outline-primary rounded-pill px-4"
+                data-aos="fade-left">View All</a>
+        </div>
+
+        <div class="row g-4">
+            {% if recent_events %}
+            {% for event in recent_events %}
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card h-100 shadow-sm hover-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">
+                                <i class="bi bi-calendar-event me-2"></i>{{ event.event_date }}
+                            </span>
+                        </div>
+                        <h4 class="card-title fw-bold mb-2">{{ event.title }}</h4>
+                        <p class="text-muted mb-4">{{ event.description[:90] }}...</p>
+
+                        <a href="{{ url_for('events') }}"
+                            class="btn btn-link text-decoration-none p-0 fw-bold stretched-link">
+                            Read More <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">No upcoming events yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="py-5 position-relative" style="background: #e9ecef;">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-end mb-5">
+            <div data-aos="fade-right">
+                <h6 class="text-success fw-bold text-uppercase ls-1">Event Gallery</h6>
+                <h2 class="fw-bold display-6 section-header" style="border-color: #198754;">Gallery</h2>
+            </div>
+            <a href="{{ url_for('gallery') }}" class="btn btn-outline-success rounded-pill px-4"
+                data-aos="fade-left">View Gallery</a>
+        </div>
+
+        <div class="row g-4">
+            {% if recent_photos %}
+            {% for photo in recent_photos %}
+            <div class="col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card border-0 text-white shadow-lg hover-card h-100"
+                    style="cursor: pointer; border-radius: 15px; overflow: hidden;" data-bs-toggle="modal"
+                    data-bs-target="#photoModal"
+                    data-src="{{ url_for('static', filename='uploads/' + photo.image_file) }}">
+
+                    <img src="{{ url_for('static', filename='uploads/' + photo.image_file) }}" class="card-img h-100"
+                        alt="Event Photo" loading="lazy" style="height: 300px; object-fit: cover;">
+
+                    <div class="card-img-overlay d-flex align-items-end p-0"
+                        style="background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);">
+                        {% if photo.caption %}
+                        <div class="p-4 w-100">
+                            <h5 class="card-title fw-bold mb-0 text-truncate">{{ photo.caption }}</h5>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12 text-center text-muted py-5">
+                <p class="lead">No photos uploaded recently.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

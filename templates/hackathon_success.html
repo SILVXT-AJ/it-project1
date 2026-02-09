@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Registration Successful!{% endblock %}
+
+{% block content %}
+<style>
+    .success-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: none;
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 40px;
+    }
+
+    .ticket-badge {
+        background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+        color: white;
+        padding: 10px 30px;
+        border-radius: 50px;
+        font-weight: 800;
+        font-size: 1.5rem;
+        display: inline-block;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(37, 117, 252, 0.3);
+    }
+
+    .success-icon {
+        font-size: 4rem;
+        color: #28a745;
+        margin-bottom: 20px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 576px) {
+        .success-card {
+            padding: 30px 20px;
+            /* Reduced padding */
+        }
+
+        .ticket-badge {
+            font-size: 1.1rem;
+            /* Smaller badge text */
+            padding: 8px 20px;
+        }
+
+        .success-icon {
+            font-size: 3rem;
+            /* Smaller icon */
+        }
+
+        h2.fw-bold {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="container py-5 mt-5">
+    <div class="success-card" data-aos="zoom-in">
+        <div class="success-icon">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+
+        {% if ticket_id %}
+        <div class="ticket-badge">
+            TICKET #{{ ticket_id }}
+        </div>
+        {% endif %}
+
+        <h2 class="fw-bold mb-3">Registration Confirmed!</h2>
+        <p class="lead text-muted mb-4">
+            Thank you for registering for <strong>{{ event.title }}</strong>.
+            {% if ticket_id %}
+            <br>Please save your Ticket Number for future reference.
+            {% endif %}
+        </p>
+
+        <div class="alert alert-light border mb-4">
+            <i class="bi bi-info-circle me-2 text-primary"></i>
+            Please keep an eye on your email for further updates and schedule details.
+        </div>
+
+        <hr class="my-4">
+
+        <div class="mb-4">
+            <p class="text-muted small mb-1">Have queries? Need help?</p>
+            <div class="d-flex justify-content-center align-items-center gap-2">
+                <i class="bi bi-telephone-fill text-primary"></i>
+                <span class="fw-bold">Contact Admin: +91 98765 43210</span>
+            </div>
+        </div>
+
+        <a href="{{ url_for('home') }}" class="btn btn-primary rounded-pill px-5 fw-bold">
+            Back to Home
+        </a>
+    </div>
+</div>
+{% endblock %}
