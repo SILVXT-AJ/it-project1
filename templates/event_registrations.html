@@ -7,11 +7,17 @@
     .registrations-header {
         background: linear-gradient(135deg, var(--gradient-start, #2575fc) 0%, var(--gradient-end, #6a11cb) 100%);
         color: white;
-        padding: 120px 0 40px 0;
+        padding: 180px 0 40px 0; /* Clear fixed header */
         border-radius: 0 0 30px 30px;
         margin-bottom: 40px;
         position: relative;
         overflow: hidden;
+    }
+
+    @media (max-width: 991px) {
+        .registrations-header {
+            padding-top: 150px;
+        }
     }
 
     .stats-badge {

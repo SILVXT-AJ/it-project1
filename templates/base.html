@@ -62,7 +62,7 @@
         .page-header-bg {
             background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
             position: relative;
-            padding: 140px 0 80px 0;
+            padding: 150px 0 80px 0; /* Increased padding-top to clear fixed header */
             color: white;
             overflow: hidden;
             border-radius: 0 0 30px 30px;
@@ -169,6 +169,11 @@
             border-bottom: none;
             position: relative;
             z-index: 1060;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+            height: 72px !important; /* Increased by 4px */
+            display: flex;
+            align-items: center;
         }
 
         .dept-sub-header {
@@ -177,14 +182,14 @@
             color: #800000;
             /* Red/Maroon */
             text-align: center;
-            padding: 8px 0;
+            padding: 10px 0;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: relative;
-            z-index: 1055;
+            z-index: 1050; /* Lower than logo-container (1100) */
         }
 
         .navbar-brand {
@@ -196,9 +201,9 @@
             font-weight: 500;
             color: rgba(255, 255, 255, 0.9) !important;
             transition: all 0.3s;
-            margin: 0 5px;
+            margin: 0 3px;
             border-radius: 20px;
-            padding: 8px 20px !important;
+            padding: 4px 15px !important;
         }
 
         .nav-link:hover,
@@ -209,36 +214,51 @@
         }
 
         .navbar-logo-large {
-            height: 120px !important;
-            width: 120px !important;
+            height: 50px !important;
+            width: 50px !important;
             object-fit: contain;
-            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
             transition: all 0.3s ease;
         }
 
         .logo-container {
-            position: absolute;
-            top: 50%;
-            left: -130px;
-            transform: translateY(-40%);
-            z-index: 1100;
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-right: 10px;
         }
 
         .est-year {
             color: #800000;
             /* Maroon */
             font-family: 'Brush Script MT', cursive;
-            font-size: 1.2rem;
-            /* Increased size for script font legibility */
+            font-size: 1.1rem; /* Slightly larger for visibility */
             font-weight: bold;
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
-            margin-top: -18px;
-            /* Slightly adjusted overlap */
+            margin-top: -5px; /* Pull down further */
+            position: relative;
+            z-index: 1100;
             letter-spacing: 1px;
             white-space: nowrap;
+        }
+
+        /* PC/Laptop Specific Adjustments */
+        @media (min-width: 992px) {
+            .navbar-logo-large {
+                height: 95px !important;
+                width: 95px !important;
+            }
+            .logo-container {
+                position: relative;
+                top: 12px; 
+                margin-bottom: -25px;
+                z-index: 1100;
+            }
+            .est-year {
+                font-size: 1.1rem; /* Reduced from 1.6rem */
+                margin-top: -5px; 
+                text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
+            }
         }
 
         .brand-text-container {
@@ -247,17 +267,22 @@
 
         @media (max-width: 991px) {
             .navbar-logo-large {
-                height: 80px !important;
-                width: 80px !important;
+                height: 45px !important;
+                width: 45px !important;
             }
 
             .logo-container {
-                left: -90px;
+                margin-right: 8px;
             }
 
             .est-year {
-                font-size: 0.7rem;
-                margin-top: -10px;
+                font-size: 0.55rem;
+                margin-top: -5px;
+            }
+
+            /* Adjust page header padding for mobile */
+            .page-header-bg {
+                padding-top: 150px;
             }
         }
 
@@ -290,7 +315,8 @@
                 right: -100%;
                 width: 280px;
                 height: 100vh;
-                background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+                background: rgba(128, 0, 0, 0.98);
+                backdrop-filter: blur(15px);
                 padding: 80px 30px 30px 30px;
                 transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 1080;
@@ -648,20 +674,19 @@
 
     <div class="header-fixed-wrapper">
         <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center ms-auto" href="{{ url_for('home') }}"
-                    style="margin-right: 150px; position: relative;">
+            <div class="container-fluid px-lg-5">
+                <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
                     <div class="logo-container">
                         <img src="{{ url_for('static', filename='uploads/sjc image.png') }}" alt="IT Logo"
                             class="navbar-logo-large">
                         <span class="est-year">Since 1844</span>
                     </div>
                     <div class="d-flex flex-column lh-1 brand-text-container">
-                        <span class="fs-5 fw-bold text-uppercase"
-                            style="letter-spacing: 1px; font-family: 'Times New Roman', serif;">St. Joseph's
+                        <span class="fs-6 fw-bold text-uppercase"
+                            style="letter-spacing: 0.5px; font-family: 'Times New Roman', serif;">St. Joseph's
                             College</span>
                         <span class="small fst-italic opacity-75 mt-1"
-                            style="font-size: 0.8rem; letter-spacing: 2px;">(Autonomous)</span>
+                            style="font-size: 0.65rem; letter-spacing: 1px;">(Autonomous)</span>
                     </div>
                 </a>
 

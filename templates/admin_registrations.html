@@ -7,10 +7,16 @@
     .admin-header {
         background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         color: white;
-        padding: 5rem 0 3rem 0;
+        padding: 180px 0 3rem 0; /* Clear fixed header */
         margin-bottom: 3rem;
         border-radius: 0 0 30px 30px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 991px) {
+        .admin-header {
+            padding-top: 150px;
+        }
     }
 </style>
 
